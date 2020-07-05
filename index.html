@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        
+    </style>
+    <script src="3d.js"></script>
+    <script src="projector.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <script src="input.js"></script>
+    <script src="devs.js"></script>
+    <script src="world.js"></script>
+</head>
+<body>
+    <div id="maindiv">
+    <div id="testdiv2"></div>
+    <div id="start">
+        <h1>Hello and welcome to JuiceFruit virtual world 2.0!</h1>
+        <p id="loadinfo1"></p>
+        <div id="loadbar1" class="loadbar"></div>
+        <button onclick="start()">Enter as normal user</button>
+        <button onclick="devground()">Developer playground</button>
+    </div>
+    <div id="testdiv"></div>
+    <audio id="audio1"></audio>
+    <h1 id="timer1">10</h1>
+    <div id="container">
+        
+        
+        <div id="target1" class="target" width="150" height="150"></div>
+        <div id="target2" class="target" width="150" height="150"></div>
+    </div>
+    <div id="characterdiv">
+        <h1>Your character</h1>
+        
+    </div>
+    <div id="characterinfo">
+        <h1>Stats</h1>
+        <br>
+        <p>Level:</p>
+        <div id="leveldiv" style="width: 5px;"></div>
+        <p>Intelligence:</p>
+        <div id="intelligencelevel"></div>
+        <p>Strength:</p>
+        <div id="strengthlevel"></div>
+        <p>Environment friendliness:</p>
+        <div id="eflevel"></div>
+        
+    </div>
+</div>
+
+<div id="textonly2">
+    <h1 id="textonly"></h1>
+</div>
+
+<div id="loadimg2">
+    <img id="loadimg">
+</div>
+    <audio id="audio2"></audio>
+    <video autoplay="true" id="videoElement" controls="">
+        
+        </video>
+        <canvas id="canvas">
+            
+        </canvas>
+        <canvas id="lefthand" width="150" height="150"></canvas>
+        <canvas id="righthand" height="150" width="150"></canvas>
+        <div hidden>
+            <canvas id="bgcanvas"></canvas>
+        
+        </div>
+
+        <div id="devdiv">
+            <div id="programs">
+                <h1>Test programs</h1>
+            </div>
+            <div id="console">
+            <textarea id="consolelog"></textarea>
+            <input type="text" id="command" placeholder="Type command here..." onkeydown="devc(event)"><button>Enter</button>
+        </div>
+        <div id="toolbar"><button onclick="balltest()">Ball test</button><button onclick="resolutionTest(3,3)">Test 3x3 resolution</button></div>
+        </div>
+        <div id="resdiv">
+        </div>
+
+        <div id="sky">
+            <div class="cloud" style="left: 40px;"></div><div style="right: 40px" class="cloud"></div>
+            <div class="sun"></div>
+        </div>
+        <div id="projectordiv">
+
+        </div>
+    <script>
+        var projectorElements=[]
+var projectorIds=[]
+var projectorcount=0
+        var version=0.0001
+        var testpr=["Microsoft logo"]
+        var testpr2=["printImg(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAALVBMVEXyUCJ/ugAApO//uQD////yTh/zVy2EvRYWp/D/uxbyTBvzXziJvyQkq/D/viRJQpTmAAABDUlEQVR4nO3PyRHCQBAEwRHo5vDfXD1ZC5oYyHKgIqtSLev8aZtixYCEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhIQdhUuq81vCNdZjED63WDX/eoT9I+wfYf8I+0fYv9pjvYbt+4hVt1j7IDzusQgJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQn/WXgB6/1wCkBWrdwAAAAASUVORK5CYII=)"]
+        var vaihe=0
+        var vaiheet=3
+        var detecteddata=false
+        var setup=0;
+var range=100
+var video = document.querySelector("#videoElement");
+        function loadinfo(text) {
+            vaihe++
+        document.getElementById("loadinfo1").innerHTML=text + ", " + Math.floor(vaihe/vaiheet * 100) + "% done"
+        document.getElementById("loadbar1").style.width=Math.floor(window.innerWidth * (vaihe/vaiheet)) + "px"
+        }
+        loadinfo("Starting virtual world")
+        loadinfo("Calibrating device")
+        loadinfo("Starting system")
+        setTimeout(playaudio, 1000, "Welcome.m4a")
+
+        function start() {
+            document.getElementById("start").style.display="none"
+            
+            //document.getElementById("testdiv").style.display="block"
+            playaudio("Calibration.m4a")
+            setTimeout(camerasetup, 4000)
+        }
+        function camerasetup() {
+            playaudio("Camera setup.m4a")
+            document.body.style.backgroundColor="white"
+            setup=1
+            document.getElementById("videoElement").style.visibility="visible"
+            //Make hand targets
+            document.getElementById("target1").style.left=(window.innerWidth / 2 + document.getElementById("canvas").offsetWidth / 4) + "px"
+            document.getElementById("target2").style.left=(window.innerWidth / 2 - document.getElementById("canvas").offsetWidth / 4 - 160) + "px"
+            document.getElementById("target2").style.display="block"
+            document.getElementById("target1").style.display="block"
+           
+            //Set the right size
+            document.getElementById("bgcanvas").width=document.getElementById("canvas").offsetWidth
+            document.getElementById("bgcanvas").height=document.getElementById("canvas").offsetHeight
+            //Clone background 
+            var ctx1=document.getElementById("canvas").getContext("2d")
+            var ctx2=document.getElementById("bgcanvas").getContext("2d")
+            var imgData = ctx1.getImageData(0, 0, document.getElementById("canvas").offsetWidth, document.getElementById("canvas").offsetWidth);
+            ctx2.putImageData(imgData, 0, 0);
+        }
+
+        function charactersetup() {
+            document.getElementById("lefthand").style.display="none"
+            document.getElementById("righthand").style.display="none"
+            document.getElementById("target1").style.display="none"
+            document.getElementById("target2").style.display="none"
+            document.getElementById("videoElement").style.visibility="hidden"
+            document.getElementById("characterdiv").style.display="block"
+            document.getElementById("characterinfo").style.display="block"
+            projecttext("Your character", true)
+        }
+
+        function loading() {
+            document.getElementById("testdiv2").style.display="block"
+            document.body.style.backgroundColor="black"
+        }
+        function playaudio(name) {
+            document.getElementById("audio1").src=name
+            document.getElementById("audio1").play()
+            
+        }
+
+        if (navigator.mediaDevices.getUserMedia) {
+  navigator.mediaDevices.getUserMedia({ video: true })
+    .then(function (stream) {
+      video.srcObject = stream;
+//start the scanning loop
+setInterval(scanvideo, 500)
+    })
+    .catch(function (err0r) {
+      console.log("Something went wrong!");
+    });
+}
+
+if (navigator.mediaDevices.getUserMedia) {
+  navigator.mediaDevices.getUserMedia({ audio: true })
+    .then(function (stream) {
+      document.getElementById("audio2").srcObject = stream;
+//start the scanning loop
+setInterval(scanvideo, 500)
+    })
+    .catch(function (err0r) {
+      console.log("Something went wrong!");
+    });
+}
+var previouspixel=[]
+function scanvideo() {      
+    //Set the canvas width and height
+      document.getElementById("canvas").width=document.getElementById("videoElement").offsetWidth
+document.getElementById("canvas").height=document.getElementById("videoElement").offsetHeight
+    
+    var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext("2d");
+    var img = document.getElementById("videoElement");
+   ctx.drawImage(img, 0, 0);
+   var imgData=ctx.getImageData(0,0,canvas.width,canvas.height)
+   
+   //Loop through every tenth pixel
+   detecteddata=false
+    for (i=0; i < canvas.height;i+=0.5) {
+        var pixel=imgData.data[((i + 0.25) * canvas.width).toFixed(0)] + imgData.data[((i + 0.25) * canvas.width + 1).toFixed(0)] + imgData.data[((i + 0.25) * canvas.width+2).toFixed(0)]
+        if (previouspixel.length < i) {
+           previouspixel.push(pixel)
+        }
+        if (previouspixel[i]==0) {
+           previouspixel[i]=pixel
+        }
+        if (pixel > previouspixel[i] + range) {
+            if (detecteddata==false) {
+                movement(i)
+                        }
+        }else if (pixel < previouspixel[i] - range) {
+               if (detecteddata==false) {
+                movement(i)
+                      }
+           }else{
+            
+        }
+        if (detecteddata==true) {
+            //alert("Pixel num:" + i + "\nPixel data:" + pixel + "\npreviouspixel:" +previouspixel[i] + "\nData length:" + imgData.data.length)
+        }
+       
+        previouspixel[i]=pixel
+   }
+}
+function timeup() {
+    if (setup==1) {
+        if (Number(document.getElementById("timer1").innerHTML)==0) {
+            setup=2
+
+            //Capture hands
+            var ctx1=document.getElementById("canvas").getContext("2d")
+            var ctx2=document.getElementById("righthand").getContext("2d")
+            var imgData = ctx1.getImageData(document.getElementById("canvas").offsetWidth / 4-150, document.getElementById("canvas").offsetHeight / 2 - 160, 150, 150);
+            ctx2.putImageData(imgData, 0, 0);
+            var imgData = ctx1.getImageData(document.getElementById("canvas").offsetWidth / 4 * 3, document.getElementById("canvas").offsetHeight / 2 - 160, 150, 150);
+            var ctx2=document.getElementById("lefthand").getContext("2d")
+            ctx2.putImageData(imgData, 0, 0);
+            document.getElementById("righthand").style.display="block"
+            document.getElementById("lefthand").style.display="block"
+            setTimeout(scan3dspace, 3000)
+        }else{
+            document.getElementById("timer1").innerHTML=Number(document.getElementById("timer1").innerHTML)-1
+        }
+        
+    }
+}
+function movement(num) {
+    
+}
+
+function devground() {
+    document.getElementById("start").style.display="none"
+    document.getElementById("devdiv").style.display="block"
+    for (var i=0; i < testpr.length; i++) {
+        var newelement=document.createElement("div")
+        var newspan=document.createElement("span")
+        newspan.innerHTML=testpr[i]
+        newelement.appendChild(newspan)
+        var newbtn=document.createElement("button")
+        newbtn.innerHTML="Edit"
+        newbtn.setAttribute("onclick", "editpr(" + i + ")")
+        newelement.appendChild(newbtn)
+        var newbtn=document.createElement("button")
+        newbtn.innerHTML="Run"
+        newbtn.setAttribute("onclick", "runpr(" + i + ")")
+        newelement.appendChild(newbtn)
+        document.getElementById("programs").appendChild(newelement)
+    }
+}
+setInterval(timeup, 1000)
+    </script>
+</body>
+</html>
