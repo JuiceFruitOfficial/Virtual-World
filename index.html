@@ -81,8 +81,16 @@
             <textarea id="consolelog"></textarea>
             <input type="text" id="command" placeholder="Type command here..." onkeydown="devc(event)"><button>Enter</button>
         </div>
-        <div id="toolbar"><button onclick="balltest()">Ball test</button><button onclick="resolutionTest(3,3)">Test 3x3 resolution</button></div>
-        </div>
+        <div id="toolbar"><button onclick="show3d()">Show/hide 3D</button><button onclick="showtests()">Show/hide tests</button><button onclick="showconsole()">Show/hide console</button><button onclick="changeprojector()">Change projector mode</button><button onclick="balltest()">Ball test</button><button onclick="resolutionTest(3,3)">Test 3x3 resolution</button><button onclick="closedev()">Close devtools</button></div>
+ <div id="blockdiv">
+        <div id="front-wall"></div>
+        <div id="left-wall"></div>
+        <div id="right-wall"></div>
+        <div id="back-wall"></div>
+        <div id="ceiling"></div>
+    </div>
+    </div>
+   
         <div id="resdiv">
         </div>
 
@@ -93,11 +101,12 @@
         <div id="projectordiv">
 
         </div>
+        <button id="devbtn" onclick="devground()">Open devtools</button>
     <script>
         var projectorElements=[]
 var projectorIds=[]
 var projectorcount=0
-        var version=0.0001
+        var version=0.0002
         var testpr=["Microsoft logo"]
         var testpr2=["printImg(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAALVBMVEXyUCJ/ugAApO//uQD////yTh/zVy2EvRYWp/D/uxbyTBvzXziJvyQkq/D/viRJQpTmAAABDUlEQVR4nO3PyRHCQBAEwRHo5vDfXD1ZC5oYyHKgIqtSLev8aZtixYCEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhIQdhUuq81vCNdZjED63WDX/eoT9I+wfYf8I+0fYv9pjvYbt+4hVt1j7IDzusQgJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQn/WXgB6/1wCkBWrdwAAAAASUVORK5CYII=)"]
         var vaihe=0
@@ -255,8 +264,10 @@ function movement(num) {
 }
 
 function devground() {
-    document.getElementById("start").style.display="none"
+    //document.getElementById("start").style.display="none"
     document.getElementById("devdiv").style.display="block"
+    document.getElementById("devbtn").style.display="none"
+    document.getElementById("programs").innerHTML="<h1>Test programs</h1>"
     for (var i=0; i < testpr.length; i++) {
         var newelement=document.createElement("div")
         var newspan=document.createElement("span")

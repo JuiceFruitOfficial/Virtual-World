@@ -34,7 +34,6 @@ function devminal(command) {
                 attribute=attribute.substring(1,attribute.length)
             }
             if (attribute=="width") {
-                alert(value)
                 newelement.style.width=value
             }
             if (attribute=="height") {
@@ -115,3 +114,44 @@ function balltest() {
     document.body.style.backgroundColor="black"
     document.getElementById("devdiv").style.display="none"
 }
+
+function closedev() {
+    document.getElementById("devbtn").style.display="block"
+    document.getElementById("devdiv").style.display="none"
+}
+
+function show3d() {
+    var el=document.getElementById("blockdiv")
+    if (el.style.display=="block") {
+        el.style.display="none"
+    }else{
+        el.style.display="block"
+    }
+}
+
+function showconsole() {
+    var el=document.getElementById("console")
+    if (el.style.display=="block") {
+        el.style.display="none"
+    }else{
+        el.style.display="block"
+    }
+}
+
+function showtests() {
+    var el=document.getElementById("programs")
+    if (el.style.display=="block") {
+        el.style.display="none"
+    }else{
+        el.style.display="block"
+    }
+}
+
+function changeprojector() {
+    if (projectormode==0) {
+        projectormode=1
+    }else{
+        projectormode=0
+    }
+}
+
