@@ -291,3 +291,10 @@ background-color: aqua;
     margin: 10px;
     background-color: black;
 }
+
+.laserdoor {
+    position: absolute;
+    width: 200px;
+    height: 300px;
+    background-color: red;
+}

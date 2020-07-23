@@ -1,4 +1,4 @@
-function create3delement(name, x,y,z,x2,y2,z2,rotation=0,type="cube") {
+function create3delement(name, x,y,z,x2,y2,z2,rotation=[0,0],type="cube") {
     if (x < x2) {
         var width=x2-x
     }else{
@@ -19,10 +19,11 @@ function create3delement(name, x,y,z,x2,y2,z2,rotation=0,type="cube") {
         var newelementy=document.createElement("div")
         var newelementz=document.createElement("div")
         //Set the sizes of the cube
-        newelementx.style.width=depth + "px"
-        newelementx.style.height=height + "px"
-        newelementy.style.width=width + "px"
-        newelementy.style.height=depth + "px"
+
+        newelementz.style.borderLeftWidth=(depth /2) + "px"
+        newelementz.style.borderTopWidth=(depth /2)+ "px"
+        newelementz.style.borderRightWidth=(depth /2)+ "px"
+        newelementz.style.borderBottomWidth=(depth /2) + "px"
         newelementz.style.width=width + "px"
         newelementz.style.height=height + "px"
         //Set the position
@@ -48,16 +49,32 @@ function create3delement(name, x,y,z,x2,y2,z2,rotation=0,type="cube") {
             newelementz.style.top=y+"px"
         }
         //colors
-        newelementx.style.backgroundColor="blue"
-        newelementy.style.backgroundColor="lightblue"
+        
+        newelementz.style.borderStyle="solid"
+        newelementz.style.borderColor="rgba(0,0,0,0)"
         newelementz.style.backgroundColor="cyan"
         //Put the position to absolute
         newelementx.style.position="absolute"
         newelementz.style.position="absolute"
         newelementy.style.position="absolute"
-        //Put the eements in the 3d
-        document.getElementById("front-wall").appendChild(newelementz)
-        document.getElementById("ceiling").appendChild(newelementy)
-        document.getElementById("left-wall").appendChild(newelementx)
+        //Put the elements in the 3d
+        var addelement=newelementz.cloneNode(true)
+        projectorElements.push(addelement)
+        newelementz.style.backgroundColor="rgba(0,0,0,0)"
+        newelementz.style.borderLeftColor="blue"
+        var addelement=newelementz.cloneNode(true)
+        projectorElements.push(addelement)
+        newelementz.style.borderTopColor="orange"
+        newelementz.style.borderLeftColor="rgba(0,0,0,0)"
+        var addelement=newelementz.cloneNode(true)
+        projectorElements.push(addelement)
+        newelementz.style.borderRightColor="green"
+        newelementz.style.borderTopColor="rgba(0,0,0,0)"
+        var addelement=newelementz.cloneNode(true)
+        projectorElements.push(addelement)
+        newelementz.style.borderRightColor="rgba(0,0,0,0)"
+        newelementz.style.borderBottomColor="red"
+        var addelement=newelementz.cloneNode(true)
+        projectorElements.push(addelement)
     }
 }
