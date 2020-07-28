@@ -7,12 +7,19 @@ function scan3dspace() {
     document.getElementById("target1").style.display="none"
     document.getElementById("target2").style.display="none"
     document.getElementById("videoElement").style.visibility="hidden"
-    var test1=makebeep(500)
-    trackhands()
-    setTimeout(stopbeep, 3000, test1)
+    try {
+        var test1=makebeep(500)
+        setTimeout(stopbeep, 3000, test1)
+    }
+    finally {
+         trackhands()
+    
     setTimeout(loadplace, 6000, "ship1")
     projectorloop=setInterval(projector, 100)
     //setTimeout(playaudio, 6000, "welcomeroom.m4a")
+    }
+    
+   
 }
 
 function trackhands(range=50) {

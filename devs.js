@@ -155,3 +155,7 @@ function changeprojector() {
     }
 }
 
+function createError(name="unknownError", message="Message is not defined!", url="unknown",linenumber="unknown") {
+    document.getElementById("errordiv").style.display="block"
+    document.getElementById("errordiv").innerHTML='<h1>ERROR: '+name+'</h1>Message: '+message+'\n<br>URL: '+url+'\n<br>Line Number: '+linenumber;
+}

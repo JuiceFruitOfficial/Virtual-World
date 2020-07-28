@@ -3,7 +3,7 @@ var ploopcount=2
 var projectorcount2=0
 var projectorbackground="black"
 function makebeep(f) {
-    var playnote=true
+        var playnote=true
     if (playnote==true) { 
     context1 = new AudioContext()
     o = context1.createOscillator()
@@ -15,11 +15,14 @@ o.connect(g)
 g.connect(context1.destination)
 o.start(0)
 }
-return o
+
+        return o
+    
+    
 }
 
 function stopbeep(o) {
-    o.frequency.value=0.1
+        o.frequency.value=0.1
     o.volume="0"
     setTimeout(function () {o.stop()}, 50)
     
@@ -97,9 +100,21 @@ function projector() {
             projectorElements[i].style.zIndex="4"
             //Make the element visible
             pdiv.appendChild(projectorElements[i])
+            
+            //Calculate the background brightness
+            var bg=projectorElements[i].style.backgroundColor
+            if (bg.substring(0, "rgb(".length)=="rgb(") {
+                var bg=bg.substring("rgb(".length, bg.length - 1).split(",")
+                var brightness=Number(bg[0]) + Number(bg[1]) +Number(bg[2])
+                
+            }else{
+                //Get the color
+
+                var brightness=255
+            }
             //Calculate border widths
-            bordersizex=projectorElements[i].offsetWidth  / 2- Number(projectorElements[i].style.borderLeftWidth.replace("px", ""))
-            bordersizey=projectorElements[i].offsetHeight / 2 - Number(projectorElements[i].style.borderTopWidth.replace("px", ""))
+            bordersizex=projectorElements[i].offsetWidth  / 2
+            bordersizey=projectorElements[i].offsetHeight / 2
             //Set the borders
             var newelement=document.createElement("div")
             newelement.style.position="absolute"
@@ -110,6 +125,8 @@ function projector() {
             newelement.style.left=(projectorElements[i].offsetLeft - bordersizex) + "px"
             newelement.style.zIndex="3"
             pdiv.appendChild(newelement)
+            
+
             
            
         }

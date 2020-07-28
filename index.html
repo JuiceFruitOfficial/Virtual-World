@@ -13,8 +13,56 @@
     <script src="input.js"></script>
     <script src="devs.js"></script>
     <script src="world.js"></script>
+    <script src="animations.js"></script>
+    <script src="rules.js"></script>
+    <script src="security/index.js"></script>
 </head>
 <body>
+    
+    <div id="setup">
+        <div>
+            <h1>Welcome!</h1>
+            <span class="tab1" onclick="showlogin()">Log in</span><span class="tab1" onclick="showregister()">Register</span>
+            <div id="login">
+                <h2>Log in</h2>
+                <div>
+                <span>Username: </span><input type="text" id="username1">
+            <span>Password: </span><input type="password" id="password1">
+            
+            
+                </div>
+            <label>
+                <span>Remember me</span><input type="checkbox" id="remember" checked="true">
+            </label>
+            <p style="color: red" id="loginmessage"></p>
+            <br>
+            <button onclick="login()">Log in</button>
+            </div>
+            <div id="register">
+
+            <h2>Create an account</h2>
+            <p>Please fill the registeration form below.</p>
+            <div style="text-align: left;">
+            <span>Username: </span><input type="text" id="username">
+            <span>Password: </span><input type="password" id="password">
+            <span>Password again: </span><input type="password" id="password2">
+            <span>Your date of birth: </span><input type="date" id="birthday">
+            <span>Your age (yes we ask this too): </span><input type="number" id="age">
+            <span>Installation type: </span>
+            <select>
+                <option value="corner"><strong>Corner mode: </strong>The device will be used in a corner and <strong>the world will be projected to that corner</strong></option>
+            </select>
+            </div>
+            <br>
+            <h2>The rules and terms of usage</h2>
+            <label>
+                <span>I have read and I accept the <span style="color: blue" onclick="alert(termsofusage)">terms of usage</span> and <span style="color: blue" onclick="alert(rules)">the rules of the JuiceFruit Virtual World</span></span> <input id="termcheck" type="checkbox">
+            </label><br>
+            <p style="color: red" id="registermessage"></p>
+            <button onclick="register()">Submit</button>
+        </div>
+        </div>
+    </div>
     <div id="maindiv">
     <div id="testdiv2"></div>
     <div id="start">
@@ -102,7 +150,50 @@
 
         </div>
         <button id="devbtn" onclick="devground()">Open devtools</button>
+        <div id="errordiv">
+
+        </div>
+
+        <div style="display: none;">
+            <iframe name="iframe1" id="iframe1" src="about:blank"></iframe>
+            <form id="form1" action="register.php" method="POST" target="iframe1">
+                <textarea name="data" id="formdata1"></textarea>
+            </form>
+        </div>
     <script>
+
+        //The remember me value on login
+        if (localStorage.remember) {
+            if (localStorage.remember=="yes") {
+            //Try to login with last used password and user
+            var password=localStorage.lastpass
+    var username=localStorage.lastuser
+    if (strcheck(username+password)) {
+        document.getElementById("form1").action="login.php"
+    document.getElementById("formdata1").value=username+";"+password;
+    document.getElementById("form1").submit()
+    }else{
+        document.getElementById("loginmessage").innerHTML="Wrong password"
+    }}
+        }else{
+            localStorage.remember="no"
+        }
+
+        if (localStorage.lastpass) {
+
+        }else{
+            localStorage.lastpass=""
+        }
+        if (localStorage.lastuser) {
+
+        }else{
+            localStorage.lastuser=""
+        }
+        
+        window.onerror = function(msg, url, linenumber) {
+    document.getElementById("errordiv").style.display="block"
+    document.getElementById("errordiv").innerHTML='<h1>ERROR</h1>Message: '+msg+'\n<br>URL: '+url+'\n<br>Line Number: '+linenumber;
+}
         var projectorElements=[]
 var projectorIds=[]
 var projectorcount=0
@@ -123,13 +214,12 @@ var video = document.querySelector("#videoElement");
         loadinfo("Starting virtual world")
         loadinfo("Calibrating device")
         loadinfo("Starting system")
-        setTimeout(playaudio, 1000, "Welcome.m4a")
 
         function start() {
             document.getElementById("start").style.display="none"
-            
             //document.getElementById("testdiv").style.display="block"
             playaudio("Calibration.m4a")
+            document.getElementById("videoElement").play()
             setTimeout(camerasetup, 4000)
         }
         function camerasetup() {
@@ -174,29 +264,7 @@ var video = document.querySelector("#videoElement");
             
         }
 
-        if (navigator.mediaDevices.getUserMedia) {
-  navigator.mediaDevices.getUserMedia({ video: true })
-    .then(function (stream) {
-      video.srcObject = stream;
-//start the scanning loop
-setInterval(scanvideo, 500)
-    })
-    .catch(function (err0r) {
-      console.log("Something went wrong!");
-    });
-}
-
-if (navigator.mediaDevices.getUserMedia) {
-  navigator.mediaDevices.getUserMedia({ audio: true })
-    .then(function (stream) {
-      document.getElementById("audio2").srcObject = stream;
-//start the scanning loop
-setInterval(scanvideo, 500)
-    })
-    .catch(function (err0r) {
-      console.log("Something went wrong!");
-    });
-}
+        
 var previouspixel=[]
 function scanvideo() {      
     //Set the canvas width and height
@@ -285,6 +353,130 @@ function devground() {
     }
 }
 setInterval(timeup, 1000)
+//Login
+function showregister() {
+    document.getElementById("register").style.display="block"
+    document.getElementById("login").style.display="none"
+}
+
+function showlogin() {
+    document.getElementById("register").style.display="none"
+    document.getElementById("login").style.display="block"
+}
+
+function login() {
+    var password=document.getElementById("password1").value
+    var username=document.getElementById("username1").value
+    if (strcheck(username+password)) {
+        document.getElementById("form1").action="login.php"
+    document.getElementById("formdata1").value=encrypt(username)+";"+encrypt(password);
+    document.getElementById("form1").submit()
+    localStorage.lastuser=encrypt(username);
+    localStorage.lastpass=encrypt(password);
+    }else{
+        document.getElementById("loginmessage").innerHTML="Wrong password"
+    }
+    
+}
+function register() {
+    var password=document.getElementById("password").value
+    var password1=document.getElementById("password2").value
+    var username=document.getElementById("username").value
+    var date=document.getElementById("birthday").value.split("-")
+    var age=Number(document.getElementById("age").value)
+    var create=true
+    var message=""
+    if (password=="") {
+        create=false
+        message=message+"<br>The password is empty"
+    }
+    if (username=="") {
+        create=false
+        message=message+"<br>The username is empty"
+    }
+    if (password != password1) {
+        message=message+"<br>The passwords don't mach"
+        create=false
+    }
+    var dateobj=new Date(Number(date[0]),Number(date[1]),Number(date[2]))
+    var date2=new Date()
+    var years=date2.getFullYear()-dateobj.getFullYear()
+    if (years > age) {
+        message=message+"<br>The birthday and age don't mach"
+        create=false
+    }
+    if (years+1 < age) {
+        message=message+"<br>The birthday and age don't mach"
+        create=false
+    }
+
+    if (document.getElementById("termcheck").checked==false) {
+        message=message+"<br>You must accept the terms of service and rules!"
+        create=false
+    }
+    if (strcheck(password+username)==false) {
+        message=message+"<br>The username and password fields can only contain following characters <strong>abcdefghijklmnopqrstuvwxyz1234567890!@#€%&/?:-_,*</strong>"
+        create=false
+    }
+    //Create account
+    if (create==true) {
+        document.getElementById("form1").action="register.php"
+        document.getElementById("formdata1").value=encrypt(username)+";"+encrypt(password)+";"+encrypt(document.getElementById("birthday").value)+";";
+        document.getElementById("form1").submit()
+        startworld()
+    }else{
+        document.getElementById("registermessage").innerHTML=message
+    }
+
+}
+
+function startworld() {
+    document.getElementById("setup").style.display="none"
+    document.getElementById("start").style.display="block"
+    playaudio("Welcome.m4a")
+
+    //Start camera and microphone
+    if (navigator.mediaDevices.getUserMedia) {
+  navigator.mediaDevices.getUserMedia({ video: true })
+    .then(function (stream) {
+      video.srcObject = stream;
+//start the scanning loop
+setInterval(scanvideo, 500)
+    })
+    .catch(function (err0r) {
+      console.log("Something went wrong!");
+    });
+}
+
+if (navigator.mediaDevices.getUserMedia) {
+  navigator.mediaDevices.getUserMedia({ audio: true })
+    .then(function (stream) {
+      document.getElementById("audio2").srcObject = stream;
+    })
+    .catch(function (err0r) {
+      console.log("Something went wrong!");
+    });
+}
+}
+
+function receiveMessage(event) {
+    console.log(event)
+    var data=event.data.split(";")
+    if (data[0]=="logged in") {
+        if (data[1]==encrypt(document.getElementById("username1").value)) {
+            if (document.getElementById("remember").checked==true) {
+                localStorage.remember="yes"
+            }else{
+                localStorage.remember="no"
+            }
+            startworld()
+        }
+    }else if (data=="nopass") {
+        document.getElementById("loginmessage").innerHTML="Wrong password"
+    }
+}
+window.addEventListener("message", receiveMessage, false);
+
     </script>
 </body>
 </html>
