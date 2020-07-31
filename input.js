@@ -15,6 +15,7 @@ function scan3dspace() {
          trackhands()
     
     setTimeout(loadplace, 6000, "ship1")
+    document.getElementById("projectorborder").style.display="block"
     projectorloop=setInterval(projector, 100)
     //setTimeout(playaudio, 6000, "welcomeroom.m4a")
     }
@@ -101,3 +102,4 @@ function trackhands(range=50) {
     //Get direction and speed
     //set hand coordinates to that point
 }
+

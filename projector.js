@@ -28,8 +28,24 @@ function stopbeep(o) {
     
     
 }
+var wall1color="red"
+var bordersize;
+var wall2color="blue"
 
+function setborder(pixels) {
+    bordersize=pixels
+    var pdiv=document.getElementById("projectordiv")
+    pdiv.style.borderLeft=pixels + "px solid " + wall2color
+    pdiv.style.borderTop=pixels + "px solid " + wall1color
+    pdiv.style.width=(window.innerWidth - pixels) + "px"
+    pdiv.style.height=(window.innerHeight - pixels) + "px"
 
+    document.getElementById("projectorborder").style.borderLeft=pixels + "px solid " + wall2color
+    document.getElementById("projectorborder").style.borderTop=pixels + "px solid " + wall1color
+    document.getElementById("projectorborder").style.width=(window.innerWidth - pixels) + "px"
+    document.getElementById("projectorborder").style.height=(window.innerHeight - pixels) + "px"
+    document.getElementById("projectorborder").style.zIndex="4"
+}
 function projecttext(text, only=false) {
     document.getElementById("textonly").innerHTML=text
     if (only==true) {
@@ -97,7 +113,7 @@ function projector() {
         pdiv.style.background=projectorbackground
         //A SPECIAL MODE: show all the elements to at the same time --> CAUSES THE COLORS TO BLEND TO EACH OTHER
         for (var i=0; i < projectorElements.length; i++) {
-            projectorElements[i].style.zIndex="4"
+            projectorElements[i].style.zIndex="5"
             //Make the element visible
             pdiv.appendChild(projectorElements[i])
             

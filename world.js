@@ -37,10 +37,10 @@ function loadplace(name) {
 
 function enterisland(name) {
     var newelement=document.createElement("div")
-    newelement.style.width="100%"
-    newelement.style.height="100%"
-    newelement.style.top="0px"
-    newelement.style.left="0px"
+    newelement.style.width="100vw"
+    newelement.style.height="100vh"
+    newelement.style.top="-"+bordersize+"px"
+    newelement.style.left="-"+bordersize+"px"
     newelement.style.position="absolute"
     newelement.style.backgroundColor="lightblue"
     projectorElements.push(newelement)
@@ -49,10 +49,10 @@ function enterisland(name) {
         setTimeout(function (){
             loadplace("terminal")
         var newelement=document.createElement("div")
-    newelement.style.width="100%"
-    newelement.style.height="100%"
-    newelement.style.top="0px"
-    newelement.style.left="0px"
+    newelement.style.width="100vw"
+    newelement.style.height="100vh"
+    newelement.style.top="-"+bordersize+"px"
+    newelement.style.left="-"+bordersize+"px"
     newelement.style.position="absolute"
     newelement.style.backgroundColor="lightblue"
     projectorElements.push(newelement)

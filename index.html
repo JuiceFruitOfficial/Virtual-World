@@ -149,6 +149,7 @@
         <div id="projectordiv">
 
         </div>
+        <div id="projectorborder"></div>
         <button id="devbtn" onclick="devground()">Open devtools</button>
         <div id="errordiv">
 
@@ -197,7 +198,7 @@
         var projectorElements=[]
 var projectorIds=[]
 var projectorcount=0
-        var version=0.0002
+        var version=0.0004
         var testpr=["Microsoft logo"]
         var testpr2=["printImg(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAALVBMVEXyUCJ/ugAApO//uQD////yTh/zVy2EvRYWp/D/uxbyTBvzXziJvyQkq/D/viRJQpTmAAABDUlEQVR4nO3PyRHCQBAEwRHo5vDfXD1ZC5oYyHKgIqtSLev8aZtixYCEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhIQdhUuq81vCNdZjED63WDX/eoT9I+wfYf8I+0fYv9pjvYbt+4hVt1j7IDzusQgJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQn/WXgB6/1wCkBWrdwAAAAASUVORK5CYII=)"]
         var vaihe=0
@@ -226,13 +227,15 @@ var video = document.querySelector("#videoElement");
             playaudio("Camera setup.m4a")
             document.body.style.backgroundColor="white"
             setup=1
+            
             document.getElementById("videoElement").style.visibility="visible"
+            scanvideo()
             //Make hand targets
             document.getElementById("target1").style.left=(window.innerWidth / 2 + document.getElementById("canvas").offsetWidth / 4) + "px"
             document.getElementById("target2").style.left=(window.innerWidth / 2 - document.getElementById("canvas").offsetWidth / 4 - 160) + "px"
             document.getElementById("target2").style.display="block"
             document.getElementById("target1").style.display="block"
-           
+            
             //Set the right size
             document.getElementById("bgcanvas").width=document.getElementById("canvas").offsetWidth
             document.getElementById("bgcanvas").height=document.getElementById("canvas").offsetHeight
@@ -309,7 +312,7 @@ function timeup() {
     if (setup==1) {
         if (Number(document.getElementById("timer1").innerHTML)==0) {
             setup=2
-
+            scanvideo()
             //Capture hands
             var ctx1=document.getElementById("canvas").getContext("2d")
             var ctx2=document.getElementById("righthand").getContext("2d")
@@ -440,8 +443,7 @@ function startworld() {
   navigator.mediaDevices.getUserMedia({ video: true })
     .then(function (stream) {
       video.srcObject = stream;
-//start the scanning loop
-setInterval(scanvideo, 500)
+
     })
     .catch(function (err0r) {
       console.log("Something went wrong!");
@@ -476,7 +478,77 @@ function receiveMessage(event) {
     }
 }
 window.addEventListener("message", receiveMessage, false);
+//The origninal screen sizes for sesizing the content
+var oheight=900
+    var owidth=1400
 
+//resize("*")
+//window.onresize=function () {oheight=rheight; owidth=rwidth; resize("*")}
+var rheight=window.innerHeight
+var rwidth=window.innerWidth
+//Resize the content 
+function resize(element, position=false) {
+    //console.log(element)
+    //The user's screen sizes
+    rheight=window.innerHeight
+    rwidth=window.innerWidth
+    
+    if (element=="*") {
+        //If all elements are selected
+        var allelements=document.body.getElementsByTagName("*")
+        //Loop trough all elements
+        for (var i=0; i < allelements.length; i++) {
+            var current=allelements[i]
+            resize(current)
+        }
+    }else{
+        var eheight=element.offsetHeight
+        var ewidth=element.offsetWidth
+        if (eheight==0) {
+            var eheight=element.height
+        }
+        if (ewidth==0) {
+            var ewidth=element.width
+        }
+        if (eheight==0) {
+            var eheight=element.style.height
+        }
+        if (ewidth==0) {
+            var ewidth=element.style.width
+        }
+        if (eheight==undefined) {
+            var eheight=element.style.height
+        }
+        if (ewidth==undefined) {
+            var ewidth=element.style.width
+        }
+        var ewidth=Number((ewidth+"").replace("px",""))
+        var eheight=Number((eheight+"").replace("px",""))
+        if (ewidth !=undefined) {
+            if (eheight != undefined) {
+                 var etop=element.offsetTop
+        var eleft=element.offsetLeft
+        //New devided by old = the ratio
+        var resultx=rwidth / owidth
+        var resulty=rheight / oheight
+        //Set width and height
+        element.style.width=Math.floor(resultx * ewidth) +"px"
+        element.style.height=Math.floor(resulty * eheight) +"px"
+        if (element.style.width != Math.floor(resultx * ewidth) +"px") {
+            
+            console.log(Math.floor(resultx * ewidth) +"px\n" + resultx + "\n" + ewidth)
+        }
+        if (element.style.height != Math.floor(resulty * eheight) +"px") {
+            console.log(Math.floor(resulty * eheight) +"px\n" + resulty + "\n" + eheight)
+        }
+            }
+        }
+       
+    }
+
+}
+
+setborder(150)
     </script>
 </body>
 </html>
