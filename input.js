@@ -102,4 +102,3 @@ function trackhands(range=50) {
     //Get direction and speed
     //set hand coordinates to that point
 }
-

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body, html, #maindiv {
+    width: 100%;
+    height: 100%;
+    
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    overflow: hidden;
+}
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+background-color: aqua;
+background: linear-gradient(45deg, rgba(116,250,130,1) 0%, rgba(0,123,255,1) 100%); 
+}
+        #characterdiv {
+    box-shadow: none !important;
+    border-radius: 25px;
+    height: calc(100% - 100px);
+    width: 90%;
+    background-color: white;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+
+
+#characterdiv>div>span {
+    position: absolute;
+    display: inline-block;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
+
+.circlebtn {
+    display: inline-block;
+    height: 75px;
+    width: 75px;
+    border-radius: 50%;
+    background-color: gray;
+    position: relative;
+    vertical-align: middle;
+    padding: 15px;
+    font-size: 20px;
+    z-index: 1;
+    cursor: pointer;
+}
+
+.popup {
+    position: absolute;
+    width: 90%;
+    height: 90%;
+    background-color: white;
+    border-radius: 25px;
+    left: 5%;
+    top: 5%;
+}
+
+.popup>div {
+    width: 100%;
+    height: 100%;
+}
+
+#charcolors {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    text-align: left;
+}
+
+#charcolors>div {
+    margin: 15px;
+    padding: 15px;
+}
+
+#charcolors>div:nth-child(1) {
+    margin: 30px;
+    padding: 15px;
+    background-color: rgba(128, 128, 128, 0.5);
+    border-radius: 20px;
+}
+
+#previewchar0 {
+    position: relative;
+}
+
+#createcharbtn {
+    position: absolute;
+left: 50%;
+bottom: 10px;
+transform: translateX(-50%);
+    
+}
+    </style>
+</head>
+<body>
+    <div id="createcharacter" class="popup">
+        <div id="charcolors">
+       <div>
+           <p>Character name</p>
+           <input type="text" id="charname" value="Untitled character">
+           <p>Skin color</p>
+           <input type="color" id="skincolor" value="#ffa493" onchange="updatechar1()">
+       <p>Hair color</p>
+       <input type="color" value="#a74c00" id="haircolor" onchange="updatechar1()">
+       <p>Eye color</p>
+       <input type="color" id="eyecolor" value="#000000" onchange="updatechar1()">
+       <p>Favourite color</p>
+       <input type="color" value="#000dff" id="favcolor" onchange="updatechar1()">
+       <p>Age:</p>
+       <select id="charage1">
+           <option value="baby">Baby</option>
+           <option value="adult">Adult</option>
+       </select><br>
+       <div style="text-align: center;">
+           <br>
+           <div id="createcharbtn" class="circlebtn"><br></r>Create</div>
+       </div>
+       
+       </div>
+       <div id="previewchar0">
+           
+       </div>
+   </div>
+   </div>
+  
+</body>
+</html>
+       

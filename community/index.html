@@ -9,10 +9,16 @@
 <body>
 <div id="main">
   <h1>Upload files</h1>
-  <form action="upload.php" method="post" enctype="multipart/form-data">
+  <form action="upload.php" method="post" enctype="multipart/form-data"> 
+    <p>Submission name: (i.e. "main menu" or "community page)"</p>
+    <input type="text" name="projectname"><br>
+    <p>Submission description:</p> 
+    <textarea name="desc"></textarea><br>
   Select file to upload:
   <br>
-  <input type="file" name="fileToUpload" id="fileToUpload"><br>
+ 
+  <input type="file" name="fileToUpload" id="fileToUpload">
+  <p><strong>We recommend to zip the folder containig the files and uploading that</strong></p><br>
   <input type="submit" value="Upload file" name="submit">
 </form>
 </div>

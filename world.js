@@ -64,28 +64,79 @@ function enterisland(name) {
 }
 
 function loadterminal() {
-    var newelement=document.createElement("div")
-    newelement.style.width="500px"
-    newelement.style.height="500px"
-    newelement.style.top="300px"
-    newelement.style.left="300px"
-    newelement.style.position="absolute"
-    newelement.style.backgroundColor="red"
-    projectorElements.push(newelement)
+    projectorbackground="black"
+    projectorElements=[]
     var newelement=document.createElement("div")
     newelement.style.width="150px"
-    newelement.style.height="400px"
-    newelement.style.top="250px"
+    newelement.style.height=bordersize+"px"
+    newelement.style.top="-"+bordersize+"px"
     newelement.style.left="75px"
     newelement.style.position="absolute"
     newelement.style.backgroundColor="blue"
     projectorElements.push(newelement)
     var newelement=document.createElement("div")
-    newelement.style.width="400px"
-    newelement.style.height="150px"
-    newelement.style.top="75px"
-    newelement.style.left="250px"
+    newelement.style.width="150px"
+    newelement.style.height=bordersize+"px"
+    newelement.style.top="-"+bordersize+"px"
+    newelement.style.right="75px"
     newelement.style.position="absolute"
     newelement.style.backgroundColor="blue"
     projectorElements.push(newelement)
+    var newelement=document.createElement("div")
+    newelement.style.width=(window.innerWidth-bordersize - 225 - 225) + "px"
+    newelement.style.height="30px"
+    newelement.style.top="-"+(bordersize/2-15)+"px"
+    newelement.style.left="225px"
+    newelement.style.position="absolute"
+    newelement.style.backgroundColor="#7FFF00"
+    newelement.style.animation="1s scan1 infinite"
+    projectorElements.push(newelement)
+    playaudio("terminal.m4a")
+    setTimeout(playaudio, 15000, "freestuff.m4a")
+}
+
+function enterworld() {
+    
+    //document.getElementById("testdiv").style.display="block"
+    //playaudio("Calibration.m4a")
+    document.getElementById("projectorborder").style.display="block"
+    projectorloop=setInterval(projector, 50)
+    document.getElementById("videoElement").play()
+    document.getElementById("allowmedia").style.display="none"
+    if (localStorage.playerx) {
+
+    }else{
+        localStorage.playerx=0
+    }
+    if (localStorage.playery) {
+
+    }else{
+        localStorage.playery=1
+    }
+    if (localStorage.playerz) {
+
+    }else{
+        localStorage.playerz=0
+    }
+    if (localStorage.playerrotatex) {
+
+    }else{
+        localStorage.playerrotatex=0
+    }
+    if (localStorage.playerrotatey) {
+
+    }else{
+        localStorage.playerrotatey=0
+    }
+    if (localStorage.playersector) {
+
+    }else{
+        localStorage.playersector="ship1"
+        
+    }
+
+    //Check player last position
+
+    loadplace(localStorage.playersector)
+    
 }

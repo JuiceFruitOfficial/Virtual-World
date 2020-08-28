@@ -1,10 +1,14 @@
 
 <?php
-$target_dir = "uploads/";
+$name=$_POST["projectname"];
+$target_dir = "uploads/".$name."/";
 $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+$description=$_POST["desc"];
 $uploadOk = 1;
 $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
-
+if (is_dir($target_dir)==false) {
+  mkdir($target_dir);
+}
 
 
 // Check if file already exists
@@ -13,12 +17,15 @@ if (file_exists($target_file)) {
   $uploadOk = 0;
 }
 
+$f = fopen($target_dir."description.html", "w");
+fwrite($f, $description);
+fclose($f);
 
 
 // Allow certain file formats
 if($imageFileType != "html" && $imageFileType != "js" && $imageFileType != "css"
-&& $imageFileType != "php" ) {
-  echo "Sorry, only HTML, CSS, PHP & JavaScript (JS) files are allowed.";
+&& $imageFileType != "php" && $imageFileType != "zip" && $imageFileType != "rar") {
+  echo "Sorry, only HTML, CSS, PHP, JavaScript (JS), zip & rar files are allowed.";
   $uploadOk = 0;
 }
 
