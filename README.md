@@ -1,13 +1,11 @@
 # Virtual World
-We are trying to make a virtual reality world for everyone without any VR-glasses.
+Our virtual world is a project to serve as a platform for others to build their own games, simulations, universal apps and more!
 
-# Contribution
-If you want to help us make this, you can follow these steps:
-1. Download a file from our GitHub or create a new one
-If you are fixing a bug, download the file containing that bug.
-If you are making a feature, create a new file, if possible
-2. Edit the code
-3. If you have multiple files, please put them in a folder an zip it
-4. Go to https://juicefruitsystem.netlify.com/community/
-5. Write a new and description for your submission
-6. Submit
+# The Core Concepts
+There are 3 clans that the players can join: Wizards and Witches, Barbarians and Nerds.
+There will be 2 places that are made by us, the developers and the rest will be made by the players. Those developer-generated places are the starting island featuring a hotel and some shops, and SkyCity, a city in the sky where the players can build their own houses and digital companies.
+
+# Technologies we are using
+
+## Voxelcss
+Voxelcss is a CSS-based 3D-engine that we are using.

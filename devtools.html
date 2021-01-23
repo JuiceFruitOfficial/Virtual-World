@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<title>voxel.css</title>
-		<link rel="stylesheet" href="voxel-css/dist/voxel.css"></link>
+<head>
 		<style>
 			#tools {
 				position: absolute;
@@ -16,14 +13,46 @@
 				font-family: Arial;
 				z-index: 10;
 			}
-
+            #blockeditor {
+                display: none;
+                position: absolute;
+                top: 0px;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+            }
+            #scene {
+               
+                display: block;
+                position: absolute;
+                top: 0px;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+            
+            }
 			
-		</style>
-	</head>
-	<body onkeydown="testmove(event)">
+        </style>
+        <link rel="stylesheet" href="3d/voxel.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Developer tools</h1>
+    <p>(Yes we know it looks bad)</p>
+    <button>Report bugs</button>
+    <p>Code editor</p>
+    <p onclick="open3d()">3D-editor</p>
+    <p>Request features</p>
+    <h1>Developer news</h1>
+    <p>Nothing here, yet!</p>
+
+	<div id="blockeditor" onkeydown="testmove(event)">
 		<div id="tools">
 			<h1>Settings</h1>
 			<span>Select block</span>
+			
 			<select onclick="changetool()" id="toolselect">
 				<option value="color">Custom color</option>
 				<option value="custom">Custom image (not working)</option>
@@ -31,7 +60,11 @@
 			<br>
 			<input type="color" id="blockcolor" onchange="changetool()">
 			<br>
-			<button onclick="exportworld()">Export</button><br>
+			<span>Block size:</span><input type="number" id="bsize">
+			<br>
+			<span>Resize all to</span><input type="text" id="resize"> <button onclick="resizeall()">Resize</button>
+			<br>
+			<button onclick="document.getElementById('exportarea').value=exportworld()">Export</button><br>
 			<button onclick="resetworld()">Reset world</button><br>
 			<button onclick="loadworld()">Load world</button>
 			<br>
@@ -42,11 +75,12 @@
 			<p>RIGHT CLICK = remove a block</p>
 			<p>SCROLL = zoom</p>
 		</div>
-		<div id="scene"></div>
-		<script src="voxel-css/dist/voxelcss.js"></script>
-		<script src="../../3d.js"></script>
+        <div id="scene"></div>
+        </div>
+		<script src="3d/voxelcss.js"></script>
+		<script src="3d.js"></script>
         <script>
-			var usepath="../../"
+			var usepath=""
 		var PI          = Math.PI;
 	var scene       = new voxelcss.Scene();
 	var lightSource = new voxelcss.LightSource(300, 300, 300, 750, 0.5, 1);
@@ -73,7 +107,7 @@ for (var i=0; i < blocklist.length; i++) {
 	newelement.value=blocklist[i]
 	document.getElementById("toolselect").appendChild(newelement)
 }
-init(document.getElementById("scene"));
+
 document.getElementById("blockcolor").style.display="none"
 function changetool() {
 	document.getElementById("blockcolor").style.display="none"
@@ -140,6 +174,8 @@ function exportworld() {
 			blockname="sand"
 		}else if (blockname.includes("brick")) {
 			blockname="bricks"
+		}else if (blockname.includes("btn")) {
+			blockname="button"
 		}
 		} catch {
 			var blockname="color:"+voxel.getMesh().getTop().getHex()
@@ -163,7 +199,7 @@ function exportworld() {
 		var blockdimension=voxel.getTravelDistance()+"+"+voxel.getBrightness() [0] + "+"+ voxel.getBrightness() [1]
 		exportdata+=blockname + "," + blockx + "," + blocky + "," + blockz + "," + blockdimension + ";"
 	 }
- 	document.getElementById("exportarea").value=exportdata
+ 	return exportdata
 }
 function load3dmodel(data) {
     var PI          = Math.PI;
@@ -217,6 +253,9 @@ function load3dmodel(data) {
 }
 function loadworld() {
 	var worlddata=prompt("Enter world data:")
+	loadworld1(worlddata)
+}        
+function loadworld1(worlddata) {
 	if (worlddata.substring(0,2)=="[{") {
 		editor.import(worlddata)
 	}else{
@@ -224,7 +263,25 @@ function loadworld() {
 	}
 	
 	world.save()
-}        </script>
+}
+function open3d() {
+    init(document.getElementById("scene"));
+    document.getElementById("blockeditor").style.display="block"
+}
+
+function resizeall() {
+	var size = Number(document.getElementById("resize").value)
+	var voxels=scene.getVoxels();
+	for (var i=0; i<voxels.length; i++) {
+		voxels[i].setDimension(Math.floor(voxels[i].getDimension()*size))
+		voxels[i].setPositionX(voxels[i].getPositionX()*size)
+		voxels[i].setPositionY(voxels[i].getPositionY()*size)
+		voxels[i].setPositionZ(voxels[i].getPositionZ()*size)
+		
+	}
+	loadworld1(exportworld())
+}
+</script>
 	</body>
 </html>
 

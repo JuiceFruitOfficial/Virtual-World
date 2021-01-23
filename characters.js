@@ -12,7 +12,7 @@ function charactersetup() {
     if (localStorage.character1) {
         chardivs[0].innerHTML=""
         loadcharacter(localStorage.character1, chardivs[0])
-        chardivs[0].setAttribute("onclick","selectedchar=1")
+        chardivs[0].setAttribute("onclick","selectchar(1)")
     }else{
         var newelement=document.createElement("span")
         newelement.innerHTML="Create new"
@@ -22,7 +22,7 @@ function charactersetup() {
     if (localStorage.character2) {
         chardivs[1].innerHTML=""
         loadcharacter(localStorage.character2, chardivs[1])
-        chardivs[1].setAttribute("onclick","selectedchar=2")
+        chardivs[1].setAttribute("onclick","selectchar(2)")
     }else{
         var newelement=document.createElement("span")
         newelement.innerHTML="Create new"
@@ -32,7 +32,7 @@ function charactersetup() {
     if (localStorage.character3) {
         chardivs[2].innerHTML=""
         loadcharacter(localStorage.character3, chardivs[2])
-        chardivs[2].setAttribute("onclick","selectedchar=3")
+        chardivs[2].setAttribute("onclick","selectchar(3)")
     }else{
         var newelement=document.createElement("span")
         chardivs[2].setAttribute("onclick","newcharacter(3)")
@@ -40,8 +40,30 @@ function charactersetup() {
         chardivs[2].appendChild(newelement)
     }
 }
-
+function selectchar(num) {
+    document.getElementById("charselectbtn").style.opacity="1"
+    document.getElementById("charselectbtn").style.pointerEvents="all"
+    selectedchar=num
+    var chardivs1=document.getElementById("characterdiv").getElementsByTagName("div")
+    var characters=[]
+    for (var i=0; i < chardivs1.length; i++) {
+        if (chardivs1[i].parentElement==document.getElementById("characterdiv")) {
+            characters.push(chardivs1[i])
+        }
+    }
+    for (var i=0; i < characters.length; i++) {
+        if (i==num-1) {
+            characters[i].style.boxShadow="0px 0px 15px 5px rgba(0,189,0,1)"
+            characters[i].style.borderColor="rgb(0,189,0)"
+        }else{
+            characters[i].style.borderColor="gray"
+            characters[i].style.boxShadow="none"
+        }
+    }
+}
 function newcharacter(num) {
+    document.body.style.background="linear-gradient(45deg, rgb(2, 0, 22) 0%, rgb(0, 2, 37) 100%)"
+    document.getElementById("characterdiv").style.display="none"
 document.getElementById("createcharacter").style.display="block"
 document.getElementById("createcharbtn").setAttribute("onclick", "finishcharacter("+num+")")
 }
@@ -56,11 +78,11 @@ function loadcharacter(data, element, version=0) {
     var eyecolor1=data[4]
     var favcolor1=data[5]
     var scene1       = new voxelcss.Scene();
-	var lightSource1 = new voxelcss.LightSource(300, 300, 300, 750, 0.3, 1);
+	var lightSource1 = new voxelcss.LightSource(300, 300, 300, 750, 0.5, 1);
 	var world1       = new voxelcss.World(scene1);
     var editor1      = new voxelcss.Editor(world1);
     editor1.disableAutoSave()
-    editor1.import(document.getElementById("babychar1").value)
+    load3dmodel(babychar, editor1)
     scene1.attach(element);
     scene1.setZoom(0.2)
     scene1.setRotationX(0)
@@ -116,7 +138,8 @@ function playaudio(name) {
 }
 function finishcharacter(num) {
 var characterdata=document.getElementById("charname").value + ";" + document.getElementById("charage1").value + ";" + document.getElementById("skincolor").value + ";" + document.getElementById("haircolor").value + ";" + document.getElementById("eyecolor").value + ";" + document.getElementById("favcolor").value
-
+document.getElementById("characterdiv").style.display="block"
+document.body.style.background="linear-gradient(45deg, rgba(116,250,130,1) 0%, rgba(0,123,255,1) 100%)"
 if (num==1) {
 localStorage.character1=characterdata
 }
@@ -149,5 +172,103 @@ function updatechar1() {
     }
     for (var i=0; i < charclothing.length; i++) {
         charclothing[i].setMesh(new voxelcss.Mesh(new voxelcss.ColorFace(fav)))
+    }
+}
+
+function showprofile(name) {
+    document.getElementById("profilediv").style.display="block"
+    document.getElementById("profilename1").innerHTML=name
+    requestFromNetwork("user:" + name, deviceId, showprofile2)
+}
+
+function showprofile2(data) {
+
+}
+
+function textbox(header, text, readtext=0, button1="Close", onclick1=function(){document.getElementById("textbox").style.display="none";playing=true;document.getElementById("worlddiv").requestPointerLock()},button2="", onclick2=function(){}) {
+    playing=false
+    document.exitPointerLock()
+    document.getElementById("textbox").style.display="block"
+    document.getElementById("textheader").innerHTML=header
+    document.getElementById("textbtn1").innerHTML=button1
+    document.getElementById("textbtn1").onclick=function () {onclick1()}
+    if (button2 != "") {
+        document.getElementById("textbtn2").innerHTML=button2
+    document.getElementById("textbtn2").onclick=function () {onclick2()}
+    }
+    
+    typewriter(document.getElementById("textboxtext"), text, 0, 50)
+}
+
+function typewriter(element, text, i, speed) {
+    element.innerHTML=text.substring(0,i)
+    if (i < text.length) {
+        setTimeout(typewriter,speed,element,text,i+1,speed)
+    }
+}
+
+function createEnemy(name) {
+    var enemy={
+        hp: 100,
+        rideable: false,
+        x: 0,
+        y: 0,
+        z: 0,
+        name: name,
+        addToEditor: function (editor) {
+            var temp1=scene2.getVoxels().length
+            load3dmodel(enemy.data,editor,true)
+            this.voxels=scene2.getVoxels().slice(temp1)
+            this.updateVoxels()
+        },
+        move: function (nx,ny,nz) {
+            this.x+=nx
+            this.y+=ny
+            this.z+=nz
+            for (var i=0; i < this.voxels.length; i++) {
+                var voxel=this.voxels[i]
+                voxel.setPositionX(voxel.getPositionX() +nx)
+                voxel.setPositionY(voxel.getPositionY() +ny)
+                voxel.setPositionZ(voxel.getPositionZ() +nz)
+            }
+            this.updateVoxels()
+        },
+        position: function (nx,ny,nz) {
+            this.move(nx-this.x,ny-this.y,nz-this.z)
+        },
+        updateVoxels: function () {
+            for (var i=0; i < this.voxels.length; i++) {
+                var voxel=this.voxels[i]
+                voxel.enemy=enemy
+            }
+        },
+        data: "",   
+        voxels: [],
+        rideable: false
+    }
+    if (name=="taxi") {
+        enemy.data=taximodel
+        enemy.rideable=true
+        enemy.ride={
+            autopilot: 2,
+            speed: 1,
+            route: "",
+            inside: {
+                wheel: "t1",
+                window: "w1"
+            }
+        }
+    }
+    return enemy
+}
+
+function ride(enemy) {
+    //Check if enemy contains ride property
+    if (enemy.hasOwnProperty("ride")) {
+        document.getElementById("worlddiv").style.height="70vh"
+        document.getElementById("worlddiv").style.width="70vw"
+        playing="ride"
+    }else{
+        Error("Enemy has no 'ride' property")
     }
 }

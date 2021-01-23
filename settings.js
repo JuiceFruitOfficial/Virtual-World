@@ -1,0 +1,1 @@
+var ridemessage="Left click to ride"

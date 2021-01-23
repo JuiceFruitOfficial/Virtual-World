@@ -15,10 +15,16 @@
     <script src="rules.js"></script>
     <script src="security/index.js"></script>
     <script src="characters.js"></script>
+    <script src="communication.js"></script>
     <link rel="stylesheet" href="3d/voxel.css"></link>
+    <link rel="stylesheet" href="images/icons.css"></link>
     <script src="3d/voxelcss.js"></script>
+    <script src="html5-qrcode.min.js"></script>
+    <script src="davidshimjs-qrcodejs-04f46c6/qrcode.min.js"></script>
+    <script src="jfos.js"></script>
+    <script src="settings.js"></script>
 </head>
-<body onresize="resized()">
+<body onresize="resized()" onkeydown="keypress(event)" onmousemove="mousemove(event)" onclick="mouseclicked(event)">
     <div id="warning" class="modal">
         <h1>Warning!</h1>
         <p>You are currently trying to enter a beta version of our virtual world! It will be a place where everyone can be whatever they want. They can work there (for real money), play, meet eachoter... actually, the only limit is your imagination! Sounds cool, right?<br><br> Well that is what it will be some day...<br><br>Currently it is a very unstable early version containing tests and many, many bugs... <br><br>To make the virtual world working nicely, we need <strong>your help</strong>. Yes, you can help us! And we are not talking only about programmers, we are talking about everyone. You can help with things you are good at! You can help us make the world better, design something, just throw some good ideas at us, just about anything!</p>
@@ -29,57 +35,17 @@
         <button onclick="nowarning()">Continue to the virtual world</button>
     </div>
     <div id="setup">
-        <div>
-            <h1>Welcome!</h1>
-            <span class="tab1" onclick="showlogin()">Log in</span><span class="tab1" onclick="showregister()">Register</span>
-            <div id="login">
-                <h2>Log in</h2>
-                <div>
-                <span>Username: </span><input type="text" id="username1">
-            <span>Password: </span><input type="password" id="password1">
-            
-            
-                </div>
-            <label>
-                <span>Remember me</span><input type="checkbox" id="remember" checked="true">
-            </label>
-            <p style="color: red" id="loginmessage"></p>
-            <br>
-            <button onclick="login()">Log in</button>
-            </div>
-            <div id="register">
-
-            <h2>Create an account</h2>
-            <p>Please fill the registeration form below.</p>
-            <div style="text-align: left;">
-            <span>Username: </span><input type="text" id="username">
-            <span>Password: </span><input type="password" id="password">
-            <span>Password again: </span><input type="password" id="password2">
-            <span>Your date of birth: </span><input type="date" id="birthday">
-            <span>Your age (yes we ask this too): </span><input type="number" id="age">
-            <span>Installation type: </span>
-            <select>
-                <option value="corner"><strong>Corner mode: </strong>The device will be used in a corner and <strong>the world will be projected to that corner</strong></option>
-            </select>
-            </div>
-            <br>
-            <h2>The rules and terms of usage</h2>
-            <label>
-                <span>I have read and I accept the <span style="color: blue" onclick="alert(termsofusage)">terms of usage</span> and <span style="color: blue" onclick="alert(rules)">the rules of the JuiceFruit Virtual World</span></span> <input id="termcheck" type="checkbox">
-            </label><br>
-            <p style="color: red" id="registermessage"></p>
-            <button onclick="register()">Submit</button>
-        </div>
+       
         </div>
     </div>
     <div id="maindiv">
     <div id="testdiv2"></div>
     <div id="start">
-        <h1>Hello and welcome to JuiceFruit virtual world 2.0!</h1>
-        <p id="loadinfo1"></p>
-        <div id="loadbar1" class="loadbar"></div>
-        <button onclick="start()">Enter as normal user</button>
-        <button onclick="devground()">Developer playground</button>
+        <img src="images/logo.png">
+        <h2>JuiceFruit Virtual World</h2>
+        
+        <button onclick="start()">Play</button>
+        <div id="bouncyball1"></div>
     </div>
     
     <div id="testdiv"></div>
@@ -94,7 +60,7 @@
             <span class="circlebox"><span class="microphone"></span></span>
         </div>
         <div class="r1">
-            <span class="circlebox"><span class="camera"></span></span>
+            <span class="circlebox"><span class="cameraicon"></span></span>
         </div>
         
         <br>
@@ -110,38 +76,38 @@
                 
             </div>
         </div>
-        <div id="createcharacter" class="popup">
-             <div id="charcolors">
-            <div>
-                <p>Character name</p>
-                <input type="text" id="charname" value="Untitled character">
-                <p>Skin color</p>
-                <input type="color" id="skincolor" value="#ffa493" onchange="updatechar1()">
-            <p>Hair color</p>
-            <input type="color" value="#a74c00" id="haircolor" onchange="updatechar1()">
-            <p>Eye color</p>
-            <input type="color" id="eyecolor" value="#000000" onchange="updatechar1()">
-            <p>Favourite color</p>
-            <input type="color" value="#000dff" id="favcolor" onchange="updatechar1()">
-            <p>Age:</p>
-            <select id="charage1">
-                <option value="baby">Baby</option>
-                <option value="adult">Adult</option>
-            </select><br>
-            <div style="text-align: center;">
-                <br>
-                <div id="createcharbtn" class="circlebtn"><br></r>Create</div>
-            </div>
-            
-            </div>
-            <div id="previewchar0">
-                
-            </div>
-        </div>
-        </div>
+        <div id="createcharacter" class="modal">
+            <div id="charcolors">
+           <div>
+               <p>Character name</p>
+               <input type="text" id="charname" value="Untitled character">
+               <p>Skin color</p>
+               <input type="color" id="skincolor" value="#ffa493" onchange="updatechar1()">
+           <p>Hair color</p>
+           <input type="color" value="#a74c00" id="haircolor" onchange="updatechar1()">
+           <p>Eye color</p>
+           <input type="color" id="eyecolor" value="#000000" onchange="updatechar1()">
+           <p>Favourite color</p>
+           <input type="color" value="#000dff" id="favcolor" onchange="updatechar1()">
+           <p>Age:</p>
+           <select id="charage1">
+               <option value="baby">Baby</option>
+               <option value="adult">Adult</option>
+           </select><br>
+           <div style="text-align: center;">
+               <br>
+               <div id="createcharbtn" class="circlebtn"><a><span>CREATE</span></a></div>
+           </div>
+           
+           </div>
+           <div id="previewchar0">
+               
+           </div>
+       </div>
        
-        <span class="circlebtn" onclick="enterworld()"><br>Continue</span>
+        
     </div>
+    <span class="circlebtn" id="charselectbtn" onclick="inputsettings()"><br>Continue</span>
     <div id="container">
         
         
@@ -150,27 +116,38 @@
     </div>
    
 </div>
-
-<div id="textonly2">
-    <h1 id="textonly"></h1>
-</div>
-
-<div id="loadimg2">
-    <img id="loadimg">
-</div>
-    <audio id="audio2"></audio>
-    <video autoplay="true" id="videoElement" controls="">
-        
-        </video>
-        <canvas id="canvas">
-            
-        </canvas>
-        <canvas id="lefthand" width="150" height="150"></canvas>
-        <canvas id="righthand" height="150" width="150"></canvas>
-        <div hidden>
-            <canvas id="bgcanvas"></canvas>
-            <canvas id="colorcanvas"></canvas>
+<div id="inputsettings" class="modal">
+    <h1><span>How</span> <span>do</span> <span>you</span> <span>want</span> <span>to</span> <span>play?</span></h1>
+    <div>
+        <h1>Input</h1>
+        <div id="mouseinput" class="selected">
+            <span>B</span>
+            <span class="mouse"></span>
+            <p>Mouse and keyboard</p>
+            <span class="gear" onclick="keysettings()">&#9881;</span>
         </div>
+        <h2>Output</h2>
+        <div id="screen1" class="selected">
+            <span class="screen"></span>
+            <p>Screen 1</p>
+        </div>
+    </div>
+    <div id="keysettings" class="popup">
+        <h1>Keyboard control settings</h1>
+        <div>
+            <span>Move forward</span>
+            <span class="key">W</span>
+            <span>Move backward</span>
+            <span class="key">S</span>
+            <span>Move left</span>
+            <span class="key">A</span>
+            <span>Move right</span>
+            <span class="key">D</span>
+        </div>
+    </div>
+    <button onclick="startplaying()">Continue</button>
+</div>
+
 
         <div id="devdiv">
             <div id="programs">
@@ -184,25 +161,14 @@
    
         <div id="resdiv">
         </div>
-        <div id="projectordiv">
-
-        </div>
-        <div id="projectorborder"></div>
-        <button id="devbtn" onclick="devground()">Open devtools</button>
+        
+        <div id="qrcode"></div>
         <div id="errordiv">
 
         </div>
 
-        <div style="display: none;">
-            <iframe name="iframe1" id="iframe1" src="about:blank"></iframe>
-            <form id="form1" action="register.php" method="POST" target="iframe1">
-                <textarea name="data" id="formdata1"></textarea>
-            </form>
-            <textarea id="babychar1">
-                [{"position":{"x":0,"y":0,"z":-100},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\"}"},{"position":{"x":-100,"y":0,"z":0},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\"}"},{"position":{"x":0,"y":0,"z":100},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\"}"},{"position":{"x":0,"y":-100,"z":0},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\"}"},{"position":{"x":0,"y":-100,"z":-100},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\"}"},{"position":{"x":0,"y":-100,"z":100},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\"}"},{"position":{"x":-100,"y":-100,"z":-100},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\"}"},{"position":{"x":-100,"y":-100,"z":0},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\"}"},{"position":{"x":-100,"y":-100,"z":100},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\"}"},{"position":{"x":-200,"y":-100,"z":100},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\"}"},{"position":{"x":-200,"y":-100,"z":-100},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\"}"},{"position":{"x":-200,"y":-100,"z":0},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\"}"},{"position":{"x":-100,"y":0,"z":-100},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\"}"},{"position":{"x":-100,"y":0,"z":100},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\"}"},{"position":{"x":-200,"y":0,"z":0},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\"}"},{"position":{"x":0,"y":0,"z":0},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":255,\\\"g\\\":164,\\\"b\\\":147,\\\"a\\\":1})\"}"},{"position":{"x":-200,"y":0,"z":100},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":0,\\\"g\\\":0,\\\"b\\\":0,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":0,\\\"g\\\":0,\\\"b\\\":0,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":0,\\\"g\\\":0,\\\"b\\\":0,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":0,\\\"g\\\":0,\\\"b\\\":0,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":0,\\\"g\\\":0,\\\"b\\\":0,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":0,\\\"g\\\":0,\\\"b\\\":0,\\\"a\\\":1})\"}"},{"position":{"x":-200,"y":0,"z":-100},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":0,\\\"g\\\":0,\\\"b\\\":0,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":0,\\\"g\\\":0,\\\"b\\\":0,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":0,\\\"g\\\":0,\\\"b\\\":0,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":0,\\\"g\\\":0,\\\"b\\\":0,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":0,\\\"g\\\":0,\\\"b\\\":0,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":0,\\\"g\\\":0,\\\"b\\\":0,\\\"a\\\":1})\"}"},{"position":{"x":0,"y":100,"z":100},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\"}"},{"position":{"x":-100,"y":100,"z":100},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\"}"},{"position":{"x":-200,"y":100,"z":100},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\"}"},{"position":{"x":0,"y":100,"z":0},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\"}"},{"position":{"x":-100,"y":100,"z":0},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\"}"},{"position":{"x":-200,"y":100,"z":0},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\"}"},{"position":{"x":0,"y":100,"z":-100},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\"}"},{"position":{"x":-100,"y":100,"z":-100},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\"}"},{"position":{"x":-200,"y":100,"z":-100},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":167,\\\"g\\\":76,\\\"b\\\":0,\\\"a\\\":1})\"}"},{"position":{"x":-200,"y":-200,"z":100},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\"}"},{"position":{"x":-100,"y":-200,"z":100},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\"}"},{"position":{"x":-200,"y":-200,"z":0},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\"}"},{"position":{"x":-100,"y":-200,"z":0},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\"}"},{"position":{"x":0,"y":-200,"z":100},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\"}"},{"position":{"x":0,"y":-200,"z":0},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\"}"},{"position":{"x":0,"y":-200,"z":-100},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\"}"},{"position":{"x":-100,"y":-200,"z":-100},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\"}"},{"position":{"x":-200,"y":-200,"z":-100},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\"}"},{"position":{"x":-100,"y":-200,"z":200},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\"}"},{"position":{"x":0,"y":-200,"z":200},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\"}"},{"position":{"x":100,"y":-200,"z":200},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\"}"},{"position":{"x":100,"y":-200,"z":100},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\"}"},{"position":{"x":100,"y":-300,"z":200},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\"}"},{"position":{"x":100,"y":-300,"z":100},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\"}"},{"position":{"x":0,"y":-300,"z":100},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\"}"},{"position":{"x":0,"y":-300,"z":0},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\"}"},{"position":{"x":0,"y":-300,"z":-100},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\"}"},{"position":{"x":-100,"y":-300,"z":-100},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\"}"},{"position":{"x":-100,"y":-300,"z":0},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\"}"},{"position":{"x":-100,"y":-300,"z":100},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\"}"},{"position":{"x":-200,"y":-300,"z":0},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\"}"},{"position":{"x":-200,"y":-300,"z":-100},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\"}"},{"position":{"x":-200,"y":-200,"z":200},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\"}"},{"position":{"x":-200,"y":-300,"z":100},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\"}"},{"position":{"x":-200,"y":-400,"z":-100},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\"}"},{"position":{"x":-200,"y":-400,"z":0},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\"}"},{"position":{"x":-200,"y":-400,"z":100},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\"}"},{"position":{"x":-100,"y":-400,"z":100},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\"}"},{"position":{"x":0,"y":-400,"z":100},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\"}"},{"position":{"x":-100,"y":-400,"z":-100},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\"}"},{"position":{"x":-100,"y":-400,"z":0},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\"}"},{"position":{"x":0,"y":-400,"z":-100},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\"}"},{"position":{"x":0,"y":-400,"z":0},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\"}"},{"position":{"x":100,"y":-200,"z":0},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\"}"},{"position":{"x":100,"y":-200,"z":-100},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\"}"},{"position":{"x":100,"y":-300,"z":0},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\"}"},{"position":{"x":100,"y":-300,"z":-100},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\"}"},{"position":{"x":100,"y":-400,"z":200},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\"}"},{"position":{"x":100,"y":-400,"z":100},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\"}"},{"position":{"x":100,"y":-400,"z":0},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\"}"},{"position":{"x":100,"y":-400,"z":-100},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\"}"},{"position":{"x":100,"y":-200,"z":-200},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\"}"},{"position":{"x":0,"y":-200,"z":-200},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\"}"},{"position":{"x":-100,"y":-200,"z":-200},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\"}"},{"position":{"x":-200,"y":-200,"z":-200},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\"}"},{"position":{"x":100,"y":-300,"z":-200},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\"}"},{"position":{"x":100,"y":-400,"z":-200},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":0,\\\"g\\\":13,\\\"b\\\":255,\\\"a\\\":1})\"}"},{"position":{"x":-200,"y":-500,"z":-100},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\"}"},{"position":{"x":-200,"y":-500,"z":0},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\"}"},{"position":{"x":-200,"y":-500,"z":100},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\"}"},{"position":{"x":-100,"y":-500,"z":-100},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\"}"},{"position":{"x":-100,"y":-500,"z":0},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\"}"},{"position":{"x":-100,"y":-500,"z":100},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\"}"},{"position":{"x":0,"y":-500,"z":100},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\"}"},{"position":{"x":0,"y":-500,"z":0},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\"}"},{"position":{"x":0,"y":-500,"z":-100},"dimension":100,"mesh":"{\"front\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"back\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"left\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"right\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"top\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\",\"bottom\":\"color({\\\"r\\\":255,\\\"g\\\":0,\\\"b\\\":19,\\\"a\\\":1})\"}"}]
-            </textarea>
-        </div>
-
+        
+        
         <div id="loaddiv" class="modal">
             <div class="preloader">
                 <div class="description">
@@ -211,30 +177,113 @@
                 <div class="loader"></div>
             </div>
         </div>
+        <div id="world" class="modal">
+            <div id="worlddiv">
+
+            </div>
+            <div id="infodiv">
+                <p id="position1"></p>
+                <p id="rotation"></p>
+                <p id="compass1"></p>
+            </div>
+            <div id="user">
+                <div>
+                    <img src="images/nerdclan.png" width="75px" height="75px">
+                </div>
+                <div>
+                    <p id="usernameinfo"></p>
+                    <div id="hp"></div>
+                    <p>Money: <span id="money"></span><span class="coinicon"></span></p>
+                    <span class="hearticon"></span><div id="hpbar"></div>
+                </div>
+                
+
+            </div>
+            <div id="profilediv" class="modal">
+                <h1 id="profilename1"></h1>
+                <div id="levelbar"></div>
+                <div>
+                    <span>Friends</span><span>Followers</span><span>Uploads</span>
+                    <span id="friendsinfo"></span><span id="followersinfo"></span><span id="uploadsinfo"></span>
+                </div>
+                <div>
+                    <span class="send"></span><span class="follow"></span><span class="addfriend"></span><span class="website"></span>
+                </div>
+                <div id="uploads">
+
+                </div>
+            </div>
+            <div id="quickstuff">
+                <span class="map"></span>
+                <span class="backbag"></span>
+                <span>Map</span>
+                <span>Inventory</span>
+                <span class="key">M</span>
+                <span class="key">E</span>
+            </div>
+            <div id="hotbar">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+
+            <div id="inventory" class="popup">
+                <div>
+                    <h1>Items</h1>
+                    <div id="itemlist">
+                        <div><span class="pickaxe"></span><span>Pickaxe</span><span>5</span></div>
+                    </div>
+                </div>
+                <div id="storagepoints"></div>
+                <div id="iteminfo">
+                    <h1 id="itemname"></h1><img id="itemimg">
+                    <div style="text-align: left; margin-left: 170px">
+                        <p>Durability: <span id="itemdurability"></span></p>
+                    <p>Damage: <span id="itemdamage"></span></p>
+                    <p>Range: <span id="itemrange"></span></p>
+                    <p>Size: <span id="itemspace"></span></p>
+                    </div>
+                    
+                    <div id="buttondiv">
+                        <span class="key">1</span>
+                        <span class="key">2</span>
+                        <span class="key">3</span>
+                        <button>Add to hotbar slot 1</button>
+                    <button>Add to hotbar slot 2</button>
+                    <button>Add to hotbar slot 3</button>
+                    </div>
+                    
+                </div>
+            </div>
+            <div id="guidePanel"></div>
+            <div id="textbox">
+                <h1 id="textheader"></h1>
+                <p id="textboxtext"></p>
+                <button id="textbtn1"></button>
+                <button id="textbtn2"></button>
+            </div>
+            <div id="notificationdiv"></div>
+            <div id="jfos" class="modal">
+                <div id="appbar">
+                    <div>
+                        <img src="images/jfnetwork.png" style="width: 100%;">
+                    </div>
+                    
+                </div>
+                <div id="addressbar">
+                    <input type="text" id="address" placeholder="JuiceFruit Network address here..."> 
+                </div>
+                <div id="window">
+                    
+                </div>
+            </div>
+        </div>
+        <div style="display: none;" id="camera">
+        
+        </div>
+        <audio id="audio2"></audio>
+    <video autoplay="true" id="videoElement" controls="">
     <script>
-        if (localStorage.warning) {
-
-        }else{
-            localStorage.warning="true"
-        }
-        if (localStorage.warning=="true") {
-            document.getElementById("warning").style.display="block"
-        }
-        
-        //The remember me value on login
-        
-        
-
-        if (localStorage.lastpass) {
-
-        }else{
-            localStorage.lastpass=""
-        }
-        if (localStorage.lastuser) {
-
-        }else{
-            localStorage.lastuser=""
-        }
         
         window.onerror = function(msg, url, linenumber) {
     document.getElementById("errordiv").style.display="block"
@@ -247,16 +296,97 @@ var projectorcount=0
         var testpr=["Microsoft logo"]
         var testpr2=["printImg(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAALVBMVEXyUCJ/ugAApO//uQD////yTh/zVy2EvRYWp/D/uxbyTBvzXziJvyQkq/D/viRJQpTmAAABDUlEQVR4nO3PyRHCQBAEwRHo5vDfXD1ZC5oYyHKgIqtSLev8aZtixYCEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhIQdhUuq81vCNdZjED63WDX/eoT9I+wfYf8I+0fYv9pjvYbt+4hVt1j7IDzusQgJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQn/WXgB6/1wCkBWrdwAAAAASUVORK5CYII=)"]
         var vaihe=0
-        var vaiheet=6
+        var vaiheet=8
         var detecteddata=false
         var setup=0;
 var range=100
-var PI          = Math.PI;
+var qrcode;
+
+var video = document.querySelector("#videoElement");
+        function loadinfo(text) {
+            vaihe++
+        document.getElementById("description_text").innerHTML=text + ", " + Math.floor(vaihe/vaiheet * 100) + "% done"
+        //When all steps are done
+        if (vaihe==vaiheet) {
+            
+            setTimeout(function () {document.getElementById("loaddiv").className="fadeout";startworld()}, 2000)
+            setTimeout(function () {
+                document.getElementById("loaddiv").style.display="none"
+                
+            }, 3000)
+            
+        }
+        }
+        loadinfo("Calculating time")
+        var scripts=document.getElementsByTagName("script")
+            vaiheet+=scripts.length
+        loadinfo("Checking installation")
+        if (localStorage.warning) {
+
+        }else{
+            localStorage.warning="true"
+        }
+        if (localStorage.warning=="true") {
+            document.getElementById("warning").style.display="block"
+        }
+        if (localStorage.inventory1) {
+            
+        }else{
+            localStorage.inventory1="100;iron_pickaxe:1;"
+            localStorage.inventory01=encrypt(localStorage.inventory1)
+        }
+        if (localStorage.inventory2) {
+            
+        }else{
+            localStorage.inventory2="100;iron_pickaxe:1;"
+            localStorage.inventory02=encrypt(localStorage.inventory2)
+        }
+        if (localStorage.inventory3) {
+            
+        }else{
+            localStorage.inventory3="100;iron_pickaxe:1;"
+            localStorage.inventory03=encrypt(localStorage.inventory3)
+        }
+        //The remember me value on login
+        if (localStorage.lastpass) {
+
+        }else{
+            localStorage.lastpass=""
+        }
+        if (localStorage.lastuser) {
+
+        }else{
+            localStorage.lastuser=""
+        }
+
+        loadinfo("Starting virtual world")
+        if (localStorage.inventory01==encrypt(localStorage.inventory1)) {
+            
+        }
+        if (localStorage.inventory02==encrypt(localStorage.inventory1)) {
+            
+        }
+        if (localStorage.inventory03==encrypt(localStorage.inventory1)) {
+            
+        }
+        loadinfo("Calibrating device")
+        loadinfo("Connecting to JuiceFruit network")
+        document.getElementById("styles1").href="styles.css?v=" + new Date().getTime();
+        for (var i=0; i < scripts.length; i++) {
+            loadinfo("loading scripts") 
+            if (scripts[i].hasAttribute("src")) {
+                scripts[i].src=scripts[i].src + "?v=" + new Date().getTime();
+            }
+        }
+        loadinfo("Starting 3D-engine")
+        
+        //Start voxelcss
+        var PI          = Math.PI;
 	var scene       = new voxelcss.Scene();
 	var lightSource = new voxelcss.LightSource(300, 300, 300, 750, 0.3, 1);
 	var world       = new voxelcss.World(scene);
 	var editor      = new voxelcss.Editor(world);
-    editor.import(document.getElementById("babychar1").value)
+    load3dmodel(babychar, editor)
     scene.attach(document.getElementById("previewchar0"));
     scene.setZoom(0.2)
     scene.setRotationX(0)
@@ -266,10 +396,12 @@ var PI          = Math.PI;
     var chareyes=[]
     var charhair=[]
     var charskin=[]
+    setTimeout(function () {
     var voxels=world.getVoxels()
+    
     for (var i=0; i < voxels.length; i++) {
         var voxel=voxels[i]
-        var color=voxel.getMesh().getFront().getHex()
+        var color=voxels[i].getMesh().getFront().getHex()
         if (color=="ffa493") {
             //Add block to skin list
             charskin.push(voxel)
@@ -288,78 +420,68 @@ var PI          = Math.PI;
 
     }
 	scene.addLightSource(lightSource);
-
-
-var video = document.querySelector("#videoElement");
-        function loadinfo(text) {
-            vaihe++
-        document.getElementById("description_text").innerHTML=text + ", " + Math.floor(vaihe/vaiheet * 100) + "% done"
-        //When all steps are done
-        if (vaihe==vaiheet) {
-            setTimeout(function () {document.getElementById("loaddiv").className="fadeout"}, 2000)
-            setTimeout(function () {
-                document.getElementById("loaddiv").style.display="none"
-            if (localStorage.remember) {
-            if (localStorage.remember=="yes") {
-            //Try to login with last used password and user
-            var password=localStorage.lastpass
-            var username=localStorage.lastuser
-            if (strcheck(username+password)) {
-                document.getElementById("form1").action="login.php"
-                document.getElementById("formdata1").value=username+";"+password;
-            document.getElementById("form1").submit()
-            }else{
-             document.getElementById("loginmessage").innerHTML="Wrong password"
-            }
-        }else{
-            localStorage.remember="no"
-        }}
-            }, 3000)
-            
-        }
-        }
-        loadinfo("Calculating time")
-        var scripts=document.getElementsByTagName("script")
-            vaiheet+=scripts.length
-        
-        loadinfo("Starting virtual world")
-        loadinfo("Calibrating device")
-        loadinfo("Connecting to JuiceFruit network")
-        document.getElementById("styles1").href="styles.css?v=" + new Date().getTime();
-        for (var i=0; i < scripts.length; i++) {
-            loadinfo("loading scripts") 
-            if (scripts[i].hasAttribute("src")) {
-                scripts[i].src=scripts[i].src + "?v=" + new Date().getTime();
-            }
-        }
-        loadinfo("Starting 3D-engine")
-        //Start voxelcss
+        loadinfo("Connecting to JuiceFruit Network")
+        qrcode = new QRCode(document.getElementById("qrcode"), {
+    text: "https://juicefruitofficial.github.io/Virtual-World?d=" + deviceId,
+    width: 100,
+    height: 100,
+    colorDark : "#000000",
+    colorLight : "#ffffff",
+    correctLevel : QRCode.CorrectLevel.H
+});
         loadinfo("Starting system")
+}, 1000);
+if (localStorage.lastversion) {
+    if (localStorage.lastversion != ""+version) {
+        //Show new features
+    }
+}else{
+    localStorage.lastversion=version
+}
         var mediaaccess=0
         function start() {
+            
             document.getElementById("audio3").pause()
             document.getElementById("start").style.display="none"
             document.getElementById("allowmedia").style.display="block"
             //Start camera and microphone
-            if (navigator.mediaDevices.getUserMedia) {
-        navigator.mediaDevices.getUserMedia({ video: true })
-            .then(function (stream) {
-            video.srcObject = stream;
-            document.getElementById("allowmedia").getElementsByTagName("div") [1].className=document.getElementById("allowmedia").getElementsByTagName("div") [1].className + " allowed"
+            Html5Qrcode.getCameras().then(devices => {
+            /**
+             * devices would be an array of objects of type:
+             * { id: "id", label: "label" }
+             */
+            if (devices && devices.length) {
+                var cameraId = devices[0].id;
+                const html5QrCode = new Html5Qrcode(/* element id */ "camera");
+                html5QrCode.start(
+                cameraId, 
+                {
+                    fps: 10,    // Optional frame per seconds for qr code scanning
+                    qrbox: 250  // Optional if you want bounded box UI
+                },
+                qrCodeMessage => {
+                    // do something when code is read
+                },
+                errorMessage => {
+                    // parse error, ignore it.
+                })
+                .catch(err => {
+                // Start failed, handle it.
+                });
+                document.getElementById("allowmedia").getElementsByTagName("div") [1].className=document.getElementById("allowmedia").getElementsByTagName("div") [1].className + " allowed"
                 document.getElementById("allowmedia").getElementsByClassName("circlebox") [1].style.boxShadow="0px 0px 50px 5px rgba(55,191,6,1), inset 0px 0px 35px 5px rgba(0,0,0,0.5)"
                 mediaaccess++
                 if (mediaaccess==2) {
                     charactersetup()
                                     
                     }
-            })
-            .catch(function (err0r) {
-                //Make the shadows
-                
-                document.getElementById("allowmedia").getElementsByClassName("circlebox") [1].style.boxShadow="0px 0px 50px 25px rgba(189,0,0,1)"
-            console.log("Something went wrong!");
+            }
+            }).catch(err => {
+            // handle err
+            document.getElementById("allowmedia").getElementsByClassName("circlebox") [1].style.boxShadow="0px 0px 50px 25px rgba(189,0,0,1)"
+
             });
-        }
+            
 
         if (navigator.mediaDevices.getUserMedia) {
         navigator.mediaDevices.getUserMedia({ audio: true })
@@ -378,6 +500,7 @@ var video = document.querySelector("#videoElement");
                 
                 document.getElementById("allowmedia").getElementsByClassName("circlebox") [0].style.boxShadow="0px 0px 50px 25px rgba(189,0,0,1)"
             console.log("Something went wrong!");
+            console.log(err0r)
             });
         }
             
@@ -494,82 +617,9 @@ function devground() {
     }
 }
 setInterval(timeup, 1000)
-//Login
-function showregister() {
-    document.getElementById("register").style.display="block"
-    document.getElementById("login").style.display="none"
-}
+var username;
+var password;
 
-function showlogin() {
-    document.getElementById("register").style.display="none"
-    document.getElementById("login").style.display="block"
-}
-
-function login() {
-    var password=document.getElementById("password1").value
-    var username=document.getElementById("username1").value
-    if (strcheck(username+password)) {
-        document.getElementById("form1").action="login.php"
-    document.getElementById("formdata1").value=encrypt(username)+";"+encrypt(password);
-    document.getElementById("form1").submit()
-    localStorage.lastuser=encrypt(username);
-    localStorage.lastpass=encrypt(password);
-    }else{
-        document.getElementById("loginmessage").innerHTML="Wrong password"
-    }
-    
-}
-function register() {
-    var password=document.getElementById("password").value
-    var password1=document.getElementById("password2").value
-    var username=document.getElementById("username").value
-    var date=document.getElementById("birthday").value.split("-")
-    var age=Number(document.getElementById("age").value)
-    var create=true
-    var message=""
-    if (password=="") {
-        create=false
-        message=message+"<br>The password is empty"
-    }
-    if (username=="") {
-        create=false
-        message=message+"<br>The username is empty"
-    }
-    if (password != password1) {
-        message=message+"<br>The passwords don't mach"
-        create=false
-    }
-    var dateobj=new Date(Number(date[0]),Number(date[1]),Number(date[2]))
-    var date2=new Date()
-    var years=date2.getFullYear()-dateobj.getFullYear()
-    if (years > age) {
-        message=message+"<br>The birthday and age don't mach"
-        create=false
-    }
-    if (years+1 < age) {
-        message=message+"<br>The birthday and age don't mach"
-        create=false
-    }
-
-    if (document.getElementById("termcheck").checked==false) {
-        message=message+"<br>You must accept the terms of service and rules!"
-        create=false
-    }
-    if (strcheck(password+username)==false) {
-        message=message+"<br>The username and password fields can only contain following characters <strong>abcdefghijklmnopqrstuvwxyz1234567890!@#€%&/?:-_,*</strong>"
-        create=false
-    }
-    //Create account
-    if (create==true) {
-        document.getElementById("form1").action="register.php"
-        document.getElementById("formdata1").value=encrypt(username)+";"+encrypt(password)+";"+encrypt(document.getElementById("birthday").value)+";";
-        document.getElementById("form1").submit()
-        startworld()
-    }else{
-        document.getElementById("registermessage").innerHTML=message
-    }
-
-}
 
 function startworld() {
     document.getElementById("setup").style.display="none"
@@ -577,26 +627,9 @@ function startworld() {
     playaudio("Welcome.m4a")
 }
 
-function receiveMessage(event) {
-    console.log(event)
-    var data=event.data.split(";")
-    if (data[0]=="logged in") {
-        if (data[1]==encrypt(document.getElementById("username1").value)) {
-            if (document.getElementById("remember").checked==true) {
-                localStorage.remember="yes"
-            }else{
-                localStorage.remember="no"
-            }
-            startworld()
-        }
-    }else if (data=="nopass") {
-        document.getElementById("loginmessage").innerHTML="Wrong password"
-    }
-    document.getElementById("iframe1").src="about:blank"
-}
-window.addEventListener("message", receiveMessage, false);
+
 function resized() {
-    setborder(bordersize)
+   
 }
 function nowarning() {
     document.getElementById("warning").style.display="none"
@@ -609,7 +642,7 @@ function bgaudio(name) {
     document.getElementById("audio3").volume="0.1"
 }
 bgaudio("audio/loading.m4a")
-setborder(150)
+
 
 
     </script>

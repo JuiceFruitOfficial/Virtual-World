@@ -1,4 +1,4 @@
-var projectormode=1;
+/*var projectormode=1;
 var ploopcount=2
 var projectorcount2=0
 var projectorbackground="black"
@@ -236,4 +236,4 @@ function getRGB(bg) {
     }else{
         return -1
     }
-}
+}*/

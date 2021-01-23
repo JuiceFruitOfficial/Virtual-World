@@ -1,0 +1,55 @@
+
+<html>
+<body style="text-align: center;">
+<div style="width: 80vw; height: 80vh; border-radius: 25px; border: 3px solid rgb(0, 204, 255); position: absolute; transform: translate(-50%,-50%); top: 50%; left: 50%; display: grid; grid-template-columns: 50% 50%;">
+<div style="position: relative">
+<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%)">
+  <span>Username: </span><input type="text\" id="username">
+<br><span>Password: </span><input type="password" id="password">
+<input type="file" id="file" name="img" hidden onchange="previewFile()"><br>
+<input type="button" onclick="register()" value="Register">
+<input type="button" onclick="login()" value="Log in">
+
+</div>
+
+</div>
+<div>
+<h2>Picture</h2>
+<img src="images/nerdclan.png" style="width: 200px; height: 200px; " id="preview" onclick="document.getElementById('file').click()">
+  <script>
+    function register() {
+      var username=document.getElementById("username").value;
+      var password=document.getElementById("password").value;
+      fwrite(password,username+".txt");
+      
+      top.postMessage("login:" + username + ";" + password, "*");
+      
+    }
+    function previewFile() {
+  var preview = document.getElementById("preview");
+  var file    = document.getElementById('file').files[0];
+  var reader  = new FileReader();
+
+  reader.onloadend = function () {
+    preview.src = reader.result;
+  };
+
+  if (file) {
+    reader.readAsDataURL(file);
+  } else {
+    preview.src = "";
+  }
+}
+    function login() {
+      var username=document.getElementById("username").value;
+      var password=document.getElementById("password").value;
+      var f=fread(username+".txt");
+      if (f==password) {
+        top.postMessage("login:" + username + ";" + password, "*");
+      }
+    }
+  </script>
+</div>
+</div>
+</body>
+</html>

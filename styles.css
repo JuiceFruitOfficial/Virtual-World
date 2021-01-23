@@ -169,7 +169,22 @@ background: linear-gradient(45deg, rgba(116,250,130,1) 0%, rgba(0,123,255,1) 100
     height: 5%;
 }
 
+#start {
+    background: linear-gradient(239deg, #6fe2b2, #b665e0, #10adfe);
+    background-size: 600% 600%;
+    width: 100%;
+    height: 100%;
+    animation: mainbg 30s ease infinite;
+}
+#start>img {
+    max-width: 90vw;
+}
 
+@keyframes mainbg {
+    0%{background-position:0% 74%}
+    50%{background-position:100% 27%}
+    100%{background-position:0% 74%}
+}
 #start>button {
     width: auto;
     padding: 1vmin;
@@ -244,12 +259,12 @@ background: linear-gradient(45deg, rgba(116,250,130,1) 0%, rgba(0,123,255,1) 100
     background-color: black;
 }
 
-#devbtn {
-    bottom: 0;
+#qrcode {
+    top: 0;
     right: 0;
     position: absolute;
-    width: 150px;
-    height: 50px;
+    width: 100px;
+    height: 100px;
     background-color: gray;
     color: white;
     z-index: 20;
@@ -447,7 +462,7 @@ background: linear-gradient(45deg, rgba(116,250,130,1) 0%, rgba(0,123,255,1) 100
     background-color: black;
 }
 
-.camera {
+.cameraicon {
     display: inline-block;
     width: 100px;
     height: 100px;
@@ -457,7 +472,7 @@ background: linear-gradient(45deg, rgba(116,250,130,1) 0%, rgba(0,123,255,1) 100
     margin: 5px 5px 5px 45px;
 }
 
-.camera::after {
+.cameraicon::after {
     content: "";
     width: 0;
     height: 20px;
@@ -698,6 +713,7 @@ background: linear-gradient(45deg, rgba(116,250,130,1) 0%, rgba(0,123,255,1) 100
     left: 5%;
     top: 5%;
     display: none;
+    box-shadow: -5vw -5vh 10vmax rgba(0, 0, 0, 0.5);
 }
 
 #allowmedia>.popup>div {
@@ -706,21 +722,126 @@ background: linear-gradient(45deg, rgba(116,250,130,1) 0%, rgba(0,123,255,1) 100
 }
 
 #charcolors {
+    background: #000523;
     display: grid;
     grid-template-columns: 50% 50%;
     text-align: left;
+    width: 100%;
+    height: 100%;
 }
 
 #charcolors>div {
     margin: 15px;
     padding: 15px;
 }
-
+#charcolors::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: #fff;
+    z-index: -1;
+}
+#charcolors::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: #fff;
+    z-index: -2;
+    filter: blur(40px);
+}
+#charcolors:nth-child(1)::before,
+#charcolors:nth-child(1)::after {
+    background: linear-gradient(235deg, #89ff00, #010615, #00bcd4);
+}
 #charcolors>div:nth-child(1) {
     margin: 30px;
     padding: 15px;
-    background-color: rgba(128, 128, 128, 0.5);
+    color: #fff;
+    font-family: 'Roboto', sans-serif;
+    background-color: rgb(2, 0, 22);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
     border-radius: 20px;
+}
+textarea {
+    display: none;
+}
+#previewchar0 {
+    position: relative;
+}
+input[type="color" i] {
+    transition: 0.5s;
+    color: #fff;
+    background: #000523;
+    border: 1px solid #000523;
+    height: 50px;
+    width: 100px;
+}
+input[type="color" i]:hover {
+    color: #fff;
+    background: #000523;
+    border: 1px solid #000523;
+    height: 60px;
+    width: 110px;
+}
+*::selection {
+    background: rgb(111, 0, 255);
+    color: #fff;
+}
+#allowmedia input[type="text" i] {
+    background: none;
+    border:1px solid rgba(255, 255, 255, 0.1);
+    color:rgba(255, 255, 255, 0.7);
+    font-size: 20px;
+    padding: 15px;
+    border-radius: 50px;
+}
+#charcolors select {
+    border: none;
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 20px;
+    padding: 5px;
+    border-radius: 50px;
+}
+#charcolors option {
+    background:#1c1a2e;
+}
+
+#createcharbtn {
+    position: absolute;
+left: 75%;
+bottom: 150px;
+transform: translateX(-50%);
+}
+#charcolors p {
+    margin-top: 10px;
+    color: rgba(255, 255, 255, 0.5);
+}
+@media (max-width: 780px) {
+    input[type="color" i] {
+        transition: 0.5s;
+        color: #fff;
+        background: #000523;
+        border: 1px solid #000523;
+        height: 50px;
+        width: 50px;
+}
+    input[type="color" i]:hover {
+        color: #fff;
+        background: #000523;
+        border: 1px solid #000523;
+        height: 60px;
+        width: 60px;
+}
+    input[type="text" i] {
+        width: 85%;
+    }
 }
 
 #previewchar0 {
@@ -734,3 +855,615 @@ background: linear-gradient(45deg, rgba(116,250,130,1) 0%, rgba(0,123,255,1) 100
     transform: translateX(-50%);
 }
 
+#inputsettings {
+    background-color: white;
+}
+
+@keyframes zoomIn {
+    0% {
+        font-size: 60px;
+    }
+}
+
+#inputsettings>h1>span {
+    animation: 0.5s zoomIn;
+    font-size: 35px;
+}
+#inputsettings>h1 {
+    min-height: 60px;
+    font-size: 60px;
+}
+#inputsettings>h1>span:nth-child(2) {
+    animation-delay: 0.25s;
+}
+#inputsettings>h1>span:nth-child(3) {
+    animation-delay: 0.5s;
+}
+#inputsettings>h1>span:nth-child(4) {
+    animation-delay: 0.75s;
+}
+#inputsettings>h1>span:nth-child(5) {
+    animation-delay: 1s;
+}
+#inputsettings>h1>span:nth-child(6) {
+    animation-delay: 1.25s;
+}
+
+#charcolors .circlebtn {
+    display: flex;
+    justify-content: center;
+    background-color: gray;
+    font-size: 20px;
+    z-index: 1;
+    cursor: pointer;
+    border-radius: 0px;
+    width: auto;
+    height: auto;
+}
+#charcolors .circlebtn a {
+    color: #fff;
+    line-height: 48px;
+    letter-spacing: 4px;
+    font-family: consolas;
+    background: #000;
+    width: 160px;
+    height: 50px;
+    -webkit-box-reflect: below 1px linear-gradient(transparent, #0004);
+}
+#charcolors .circlebtn a span {
+    position: absolute;
+    display: block;
+    top: 1px;
+    left: 1px;
+    right: 1px;
+    bottom: 1px;
+    text-align: center;
+    background: #030022;
+    color: rgba(255, 255, 255, 0.2);
+    transition: 0.2s;
+    z-index: 1;
+}
+#charcolors .circlebtn a span::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: rgba(22, 0, 122, 0.1);
+}
+a:hover span {
+    color: rgba(255, 255, 255, 1);
+}
+#charcolors .circlebtn a::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(45deg, #e74c3c, #2c3e50, #8e44ad, #3498db, #f1c40f);
+    background-size: 400%;
+    filter: blur(20px);
+    transition: 0.5s;
+    opacity: 0;
+    animation: animate1 20s linear infinite;
+}
+#charcolors .circlebtn a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(45deg,#e74c3c, #2c3e50, #8e44ad, #3498db, #f1c40f);
+    background-size: 400%;
+    transition: 0.5s;
+    opacity: 0;
+    animation: animate1 10 linear infinite;
+}
+#charcolors .circlebtn a:hover::after,
+#charcolors .circlebtn a:hover::before {
+    opacity: 1;
+}
+@keyframes animate1 {
+    0% {
+        background-position: 0 0;
+    }
+    50% {
+        background-position: 300% 0;
+    }
+    100% {
+        background-position: 0 0;
+    }
+}
+#charcolors .circlebtn::before {
+    overflow: hidden;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    background: rgb(120, 120, 120);
+    z-index: -1;
+}
+
+
+a:hover span {
+    color: rgba(255, 255, 255, 1);
+}
+.circlebtn a::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(45deg, #e74c3c, #2c3e50, #8e44ad, #3498db, #f1c40f);
+    background-size: 400%;
+    filter: blur(20px);
+    transition: 0.5s;
+    opacity: 0;
+    animation: animate1 20s linear infinite;
+}
+#charcolors .circlebtn a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(45deg,#e74c3c, #2c3e50, #8e44ad, #3498db, #f1c40f);
+    background-size: 400%;
+    transition: 0.5s;
+    opacity: 0;
+    animation: animate1 10 linear infinite;
+}
+#charcolors .circlebtn a:hover::after,
+#charcolors .circlebtn a:hover::before {
+    opacity: 1;
+}
+@keyframes animate1 {
+    0% {
+        background-position: 0 0;
+    }
+    50% {
+        background-position: 300% 0;
+    }
+    100% {
+        background-position: 0 0;
+    }
+}
+#charcolors .circlebtn::before {
+    overflow: hidden;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    background: rgb(120, 120, 120);
+    z-index: -1;
+}
+
+#charselectbtn {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+#inputsettings>div>div {
+    border-radius: 20px;
+    height: 150px;
+    width: 150px;
+    background-color: rgb(226, 226, 226);
+    display: inline-block;
+    position: relative;
+    margin-bottom: 50px;
+}
+#inputsettings>div>div>p {
+    position: absolute;
+    width: 150px;
+    top: 160px;
+    left: 0px;
+}
+#inputsettings>div>div>.gear {
+    position: absolute;
+    top: 0px;
+    right: 10px;
+    font-size: 35px;
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+    text-align: top;
+    color: white;
+}
+#mouseinput>span:nth-child(1) {
+    position: absolute;
+    font-size: 30px;
+    right: 10px;
+    top: 50px;
+    color: rgb(201, 201, 201);
+}
+#mouseinput>span:nth-child(1)::after {
+    content: "A";
+    position: absolute;
+    font-size: 50px;
+    left: -90px;
+    top: -50px;
+    color: rgb(201, 201, 201);
+}
+
+#mouseinput>span:nth-child(1)::before {
+    content: "C";
+    position: absolute;
+    font-size: 70px;
+    bottom: -70px;
+    left: -40px;
+    color: rgb(201, 201, 201);
+}
+
+.mouse {
+    display: inline-block;
+    width: 0px;
+    height: 30px;
+    background-color: rgb(190, 190, 190);
+    position: relative;
+    border-radius: 50%;
+    border: 0px solid rgb(190, 190, 190);
+    border-left-width: 20px;
+    border-right-width: 20px;
+    border-right-color: rgb(175, 175, 175);
+}
+
+.mouse::after {
+    content: "";
+    position: absolute;
+    top: 13px;
+    right: -18px;
+    width: 15px;
+    height: 4px;
+    display: inline-block;
+    background-color: rgb(190, 190, 190);
+    border-radius: 2px;
+}
+
+#mouseinput>.mouse {
+    position: absolute;
+    left: 10px;
+    top: 100px;
+}
+#inputsettings .screen {
+    position: absolute !important;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+#inputsettings .selected {
+    box-shadow: 0px 0px 33px 6px rgba(162, 0, 255, 0.75);
+
+}
+.screen {
+    display: inline-block;
+    background-color: rgb(0, 204, 255);
+    width: 100px;
+    height: 70px;
+    border: 10px solid black;
+    position: relative;
+}
+.screen::after {
+    display: inline-block;
+    content: "";
+    position: absolute;
+    width: 20px;
+    border: 10px solid transparent;
+    height: 0;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-bottom-color: black;
+    
+}
+#worlddiv {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    background-color: rgb(92, 217, 255);
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+}
+
+#world>div {
+    position: absolute;
+}
+
+#quickstuff {
+    bottom: 0;
+    right: 0;
+    display: grid;
+    grid-template-columns: 100px 100px;
+    justify-items: center;
+    align-items: center;
+}
+#hotbar {
+    bottom: 0;
+    left: 0;
+    height: 70px;
+    width: 200px;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+#keysettings>div {
+    display: grid !important;
+    grid-template-columns: 50% 50%;
+    text-align: left;
+    width: 100% !important;
+    height: auto !important;
+    background-color: transparent !important;
+}
+.key {
+    font-size: 40px;
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    color: rgb(71, 245, 245);
+    border: 2px solid rgb(71, 245, 245);
+    text-shadow: 0px 0px 5px rgba(0,200,200,1);
+    text-align: center;
+    box-shadow: 0px 0px 4px 4px rgba(0,200,200,0.6), 0px 0px 4px 4px rgba(0,200,200,0.6) inset;
+    margin: 5px;
+}
+
+#hotbar>div {
+    width: 50px;
+    height: 50px;
+    display: inline-block;
+    background-color: rgba(255, 225, 159, 0.75);
+    margin: 5px;
+    margin-top: 10px;
+}
+
+#inventory {
+    grid-template-columns: 200px auto;
+}
+
+#storagepoints>span {
+    display: inline-block;
+    height: 25px;
+    width: 25px;
+    margin: 2px;
+}
+
+#user {
+    top: 0;
+    left: 0;
+    width: 300px;
+    height: 85px;
+    background-color: rgba(22, 0, 122, 0.2);
+    display: grid;
+    grid-template-columns: 85px auto;
+    text-align: left;
+}
+#user>div {
+    margin: 5px;
+}
+
+#profilediv {
+    background-color: rgb(200, 200, 200);
+}
+
+#infodiv {
+    position: absolute;
+    left: 0;
+    top: 85px;
+    text-align: left;
+}
+
+#itemlist>div {
+    background-color: rgba(255, 225, 159, 0.75);
+    height: 54px;
+    width: 95%;
+    display: grid;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+    grid-template-columns: 50px auto 20px;
+}
+
+#itemlist>div>img {
+    width: 50px;
+    height: 50px;
+    margin: 2px;
+}
+
+#iteminfo {
+    display: none;
+    position: relative;
+}
+
+#iteminfo>img {
+    width: 130px;
+    height: 130px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    border: 5px solid rgba(255, 225, 159);
+    padding: 5px;
+}
+
+#buttondiv {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    height: auto;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    text-align: center;
+    
+}
+
+#buttondiv>.key {
+    margin: auto;
+}
+
+#buttondiv>button {
+    margin: 10px;
+    height: 25px;
+    background-color: rgb(245, 138, 126);
+    border: 1px solid rgb(252, 106, 90);
+}
+#notificationdiv {
+    position: absolute;
+    right: 0px;
+    top: 50px;
+}
+#notificationdiv>div {
+    width: 200px;
+    height: 75px;
+    background-color: rgba(255, 255, 255, 0.5);
+    margin: 5px;
+    border-radius: 10px;
+    animation: 5s notification;
+}
+
+@keyframes notification {
+    0% {
+        height: 0px;
+        opacity:0;
+        overflow: hidden;
+    }
+    10% {
+        height: 75px;
+        opacity:1;
+        overflow: auto;
+    }
+    90% {
+        height: 75px;
+        opacity:1;
+        overflow: hidden;
+    }
+    100% {
+        
+        opacity:0;
+        height: 0px;
+    }
+}
+
+#bouncyball1 {
+    width: 30vmin;
+    height: 30vmin;
+    border-radius: 50%;
+    background-color: rgba(255,255,255,0.2);
+    z-index: 0;
+    pointer-events: none;
+    position: absolute;
+    animation: 30s bouncyball1 infinite;
+    box-shadow: 0 0 25px 25px rgba(255,255,255,0.2);
+}
+
+@keyframes bouncyball1 {
+    0% {
+        left: 5vw;
+        top: 10vh;
+    }
+    25% {
+        left: 50vw;
+        top: 65vh;
+    }
+    50% {
+        left: 20vw;
+        top: 80vh;
+    }
+    75% {
+        left: 70vw;
+        top: 30vh;
+    }
+    100% {
+        left: 5vw;
+        top: 10vh;
+    }
+}
+
+#textbox {
+    background-color: rgb(231, 188, 122);
+    height: 10vh;
+    max-height: 200px;
+    position: absolute;
+    bottom: 3vh;
+    width: 96vw;
+    left: 2vw;
+    display: none;
+}
+
+#textbox>button {
+    position: absolute;
+    bottom: 10px;
+    width: 70px;
+    height: 30px;
+    background-color: rgb(182, 182, 182);
+    border: none;
+}
+#guidePanel {
+    padding: 10px;
+    position: absolute;
+    bottom: 100px;
+    
+    left: 50%;
+    transform: translateX(-50%);
+    display: none;
+    background-color: rgba(116, 190, 233, 0.4);
+}
+#textbtn1 {
+    right: 10px;
+}
+#textbtn2 {
+    right: 90px;
+}
+#jfos {
+    background-color: rgba(0,123,255,0.7);
+    animation: 1s fadeIn;
+}
+
+#appbar {
+    position: absolute;
+    top:0px;
+    right: 0px;
+    width: 10vw;
+    max-width: 75px;
+    height: 100%;
+    background-color: deepskyblue;
+}
+#appbar>div {
+    position: absolute;
+    bottom: 0px;
+    left: 0;
+    width: 100%;
+
+}
+#window  {
+    text-align: left;
+}
+#window>iframe {
+    border: none;
+    height: calc(100vh - 20px);
+    width: calc(100vw - 75px);
+    min-width: 90vw;
+    position: absolute;
+    bottom: 0px;
+    left: 0;
+}
+
+#addressbar {
+    position: absolute;
+    width: calc(100vw - 75px);
+    min-width: 90vw;
+    height: 20px;
+    top: 0;
+    left: 0;
+    background-color: rgb(176, 106, 241);
+    text-align: left;
+}
+#addressbar>input {
+    width: calc(100% - 75px);
+    height: 15px;
+    
+}

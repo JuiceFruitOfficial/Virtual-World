@@ -10,3 +10,8 @@ function animate(element, name, duration) {
         var interval=setInterval(function (element, interval) {element.style.opacity=Number(element.style.opacity) - 0.001; if (Number(element.style.opacity)<=0) {clearInterval(interval+1);}}, duration / 1000-1, element, interval1)
     }
 }
+
+function guidePanel(text) {
+    document.getElementById("guidePanel").style.display="block"
+    document.getElementById("guidePanel").innerHTML=text
+}
