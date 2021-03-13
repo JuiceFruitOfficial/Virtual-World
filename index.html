@@ -16,15 +16,14 @@
     <script src="security/index.js"></script>
     <script src="characters.js"></script>
     <script src="communication.js"></script>
-    <link rel="stylesheet" href="3d/voxel.css"></link>
     <link rel="stylesheet" href="images/icons.css"></link>
-    <script src="3d/voxelcss.js"></script>
+    
     <script src="html5-qrcode.min.js"></script>
     <script src="davidshimjs-qrcodejs-04f46c6/qrcode.min.js"></script>
     <script src="jfos.js"></script>
     <script src="settings.js"></script>
 </head>
-<body onresize="resized()" onkeydown="keypress(event)" onmousemove="mousemove(event)" onclick="mouseclicked(event)">
+<body onresize="resized()" onkeydown="keyInput(event)" onkeyup="keyup(event)" >
     <div id="warning" class="modal">
         <h1>Warning!</h1>
         <p>You are currently trying to enter a beta version of our virtual world! It will be a place where everyone can be whatever they want. They can work there (for real money), play, meet eachoter... actually, the only limit is your imagination! Sounds cool, right?<br><br> Well that is what it will be some day...<br><br>Currently it is a very unstable early version containing tests and many, many bugs... <br><br>To make the virtual world working nicely, we need <strong>your help</strong>. Yes, you can help us! And we are not talking only about programmers, we are talking about everyone. You can help with things you are good at! You can help us make the world better, design something, just throw some good ideas at us, just about anything!</p>
@@ -177,9 +176,57 @@
                 <div class="loader"></div>
             </div>
         </div>
+        
         <div id="world" class="modal">
+            
             <div id="worlddiv">
 
+            </div>
+            <div id="gamearea" onmousedown="if (playing=true) {placeitem(event)}">
+        
+            </div>
+            <div id="enterplace"><span class="key">T</span><h1>Enter</h1></div>
+            <div id="player" class="player">
+                <div class="head">
+        
+                </div>
+                <div class="hand righthand" id="righthand">
+                    <div class="spellstick" style="display: none;"></div>
+                </div>
+                <div class="hand lefthand" id="lefthand">
+                    <div class="spellstick" style="transform: rotate(-30deg); right: 20px;"></div>
+                </div>
+        
+                <div class="leg rightleg" id="rightleg">
+        
+                </div>
+                <div class="leg leftleg" id="leftleg">
+        
+                </div>
+                <div class="body">
+        
+                </div>
+            </div>
+            <div id="fade"></div>
+            <div id="dark"></div>
+            <div id="tabs">
+                    <span onclick="showitems()">Items</span>
+                    <span onclick="showspells()">Spells</span>
+                </div>
+            
+            <div id="inventory2">
+                <div id="leafstorm" class="weak">
+                    <div class="leaf"></div>
+                </div>
+                <p id="leafstorm1">LeafStorm</p>
+                <div id="fireball" class="weak">
+                    <div class="fireball"></div>
+                </div>
+                <p id="fireball1">Fire Ball</p>
+            </div>
+            
+            <div id="carbar">
+                <div id="carwheel" class="steeringwheel"></div>
             </div>
             <div id="infodiv">
                 <p id="position1"></p>
@@ -259,8 +306,9 @@
             <div id="textbox">
                 <h1 id="textheader"></h1>
                 <p id="textboxtext"></p>
-                <button id="textbtn1"></button>
-                <button id="textbtn2"></button>
+                <div id="buttondiv1"><button id="textbtn1"></button>
+                <button id="textbtn2"></button></div>
+                
             </div>
             <div id="notificationdiv"></div>
             <div id="jfos" class="modal">
@@ -284,7 +332,26 @@
         <audio id="audio2"></audio>
     <video autoplay="true" id="videoElement" controls="">
     <script>
-        
+        var gnum=[]
+        var unfloored=[]
+        var unfloored2=[]
+        var leafstorm=0
+        var health= 250
+        var stonespiritreload=0
+        var animationlist=[]
+        var enemies=[]
+    var playerx=0
+    var playery=0
+    var playerz=0
+    var playerrotate=0
+    var unloaded=[]
+    var interval;
+    var recharching=false
+    var gameobjects=[]
+    var selecteditem=""
+    var enterplace="false"
+    var gameobjects=[]
+    var lastchunk=""
         window.onerror = function(msg, url, linenumber) {
     document.getElementById("errordiv").style.display="block"
     document.getElementById("errordiv").innerHTML='<h1>ERROR</h1>Message: '+msg+'\n<br>URL: '+url+'\n<br>Line Number: '+linenumber;
@@ -380,46 +447,6 @@ var video = document.querySelector("#videoElement");
         }
         loadinfo("Starting 3D-engine")
         
-        //Start voxelcss
-        var PI          = Math.PI;
-	var scene       = new voxelcss.Scene();
-	var lightSource = new voxelcss.LightSource(300, 300, 300, 750, 0.3, 1);
-	var world       = new voxelcss.World(scene);
-	var editor      = new voxelcss.Editor(world);
-    load3dmodel(babychar, editor)
-    scene.attach(document.getElementById("previewchar0"));
-    scene.setZoom(0.2)
-    scene.setRotationX(0)
-    scene.setRotationY(0.8)
-    editor.disable()
-    var charclothing=[]
-    var chareyes=[]
-    var charhair=[]
-    var charskin=[]
-    setTimeout(function () {
-    var voxels=world.getVoxels()
-    
-    for (var i=0; i < voxels.length; i++) {
-        var voxel=voxels[i]
-        var color=voxels[i].getMesh().getFront().getHex()
-        if (color=="ffa493") {
-            //Add block to skin list
-            charskin.push(voxel)
-        }else if (color=="000000") {
-            //Add block to eye list
-            chareyes.push(voxel)
-        }else if (color=="a74c00") {
-            //add block to hair list
-            charhair.push(voxel)
-        }else if (color=="000dff") {
-            //add block to clothing list
-            charclothing.push(voxel)
-        }else {
-            //alert(color)
-        }
-
-    }
-	scene.addLightSource(lightSource);
         loadinfo("Connecting to JuiceFruit Network")
         qrcode = new QRCode(document.getElementById("qrcode"), {
     text: "https://juicefruitofficial.github.io/Virtual-World?d=" + deviceId,
@@ -430,7 +457,7 @@ var video = document.querySelector("#videoElement");
     correctLevel : QRCode.CorrectLevel.H
 });
         loadinfo("Starting system")
-}, 1000);
+
 if (localStorage.lastversion) {
     if (localStorage.lastversion != ""+version) {
         //Show new features
@@ -445,14 +472,14 @@ if (localStorage.lastversion) {
             document.getElementById("start").style.display="none"
             document.getElementById("allowmedia").style.display="block"
             //Start camera and microphone
-            Html5Qrcode.getCameras().then(devices => {
+            //Html5Qrcode.getCameras().then(devices => {
             /**
              * devices would be an array of objects of type:
              * { id: "id", label: "label" }
              */
-            if (devices && devices.length) {
+            /*if (devices && devices.length) {
                 var cameraId = devices[0].id;
-                const html5QrCode = new Html5Qrcode(/* element id */ "camera");
+                const html5QrCode = new Html5Qrcode("camera");
                 html5QrCode.start(
                 cameraId, 
                 {
@@ -502,31 +529,10 @@ if (localStorage.lastversion) {
             console.log("Something went wrong!");
             console.log(err0r)
             });
+        }*/
+            charactersetup()
         }
-            
-        }
-        function camerasetup() {
-            playaudio("Camera setup.m4a")
-            document.body.style.backgroundColor="white"
-            setup=1
-            
-            document.getElementById("videoElement").style.visibility="visible"
-            scanvideo()
-            //Make hand targets
-            document.getElementById("target1").style.left=(window.innerWidth / 2 + document.getElementById("canvas").offsetWidth / 4) + "px"
-            document.getElementById("target2").style.left=(window.innerWidth / 2 - document.getElementById("canvas").offsetWidth / 4 - 160) + "px"
-            document.getElementById("target2").style.display="block"
-            document.getElementById("target1").style.display="block"
-            
-            //Set the right size
-            document.getElementById("bgcanvas").width=document.getElementById("canvas").offsetWidth
-            document.getElementById("bgcanvas").height=document.getElementById("canvas").offsetHeight
-            //Clone background 
-            var ctx1=document.getElementById("canvas").getContext("2d")
-            var ctx2=document.getElementById("bgcanvas").getContext("2d")
-            var imgData = ctx1.getImageData(0, 0, document.getElementById("canvas").offsetWidth, document.getElementById("canvas").offsetWidth);
-            ctx2.putImageData(imgData, 0, 0);
-        }
+        
 
         
 var previouspixel=[]

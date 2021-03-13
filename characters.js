@@ -60,72 +60,65 @@ function selectchar(num) {
             characters[i].style.boxShadow="none"
         }
     }
+    updatehotbar()
 }
 function newcharacter(num) {
     document.body.style.background="linear-gradient(45deg, rgb(2, 0, 22) 0%, rgb(0, 2, 37) 100%)"
     document.getElementById("characterdiv").style.display="none"
 document.getElementById("createcharacter").style.display="block"
 document.getElementById("createcharbtn").setAttribute("onclick", "finishcharacter("+num+")")
+loadcharacter({},document.getElementById("previewchar0"))
 }
 
-function loadcharacter(data, element, version=0) {
-    console.log(element)
-    var data=data.split(";")
-    var name=data[0]
-    var age=data[1]
-    var skincolor1=data[2]
-    var haircolor1=data[3]
-    var eyecolor1=data[4]
-    var favcolor1=data[5]
-    var scene1       = new voxelcss.Scene();
-	var lightSource1 = new voxelcss.LightSource(300, 300, 300, 750, 0.5, 1);
-	var world1       = new voxelcss.World(scene1);
-    var editor1      = new voxelcss.Editor(world1);
-    editor1.disableAutoSave()
-    load3dmodel(babychar, editor1)
-    scene1.attach(element);
-    scene1.setZoom(0.2)
-    scene1.setRotationX(0)
-    scene1.setRotationY(0.8)
-    scene1.addLightSource(lightSource1);
-    editor1.disable()
-    var charclothing1=[]
-    var chareyes1=[]
-    var charhair1=[]
-    var charskin1=[]
-    var voxels=world1.getVoxels()
-    for (var i=0; i < voxels.length; i++) {
-        var voxel=voxels[i]
-        var color=voxel.getMesh().getFront().getHex()
-        if (color=="ffa493") {
-            //Add block to skin list
-            charskin1.push(voxel)
-        }else if (color=="000000") {
-            //Add block to eye list
-            chareyes1.push(voxel)
-        }else if (color=="a74c00") {
-            //add block to hair list
-            charhair1.push(voxel)
-        }else if (color=="000dff") {
-            //add block to clothing list
-            charclothing1.push(voxel)
-        }else {
-            //alert(color)
+function loadcharacter(data={}, element, version=0) {
+        var newelement = document.createElement(("div"))
+    newelement.className = "player"
+    var newelement2 = document.createElement(("div"))
+    newelement2.className = "leg rightleg"
+    newelement2.style.animationPlayState="paused"
+    newelement.appendChild(newelement2)
+    var newelement2 = document.createElement(("div"))
+    newelement2.className = "leg leftleg"
+    newelement2.style.animationPlayState="paused"
+    newelement.appendChild(newelement2)
+    var newelement2 = document.createElement(("div"))
+    newelement2.className = "hand righthand"
+    newelement.appendChild(newelement2)
+    var newelement2 = document.createElement(("div"))
+    newelement2.className = "hand lefthand"
+    newelement.appendChild(newelement2)
+    var newelement2 = document.createElement(("div"))
+    newelement2.className = "head"
+    //Apply the custom data
+    if (data.hasOwnProperty("head")) {
+        if (data.head.hasOwnProperty("color")) {
+            newelement2.style.backgroundColor=data.head.color
         }
-
+        if (data.head.hasOwnProperty("round")) {
+            newelement2.style.borderRadius=data.head.round
+        }
     }
-    for (var i=0; i < charhair1.length; i++) {
-        charhair1[i].setMesh(new voxelcss.Mesh(new voxelcss.ColorFace(haircolor1)))
+    if (data.hasOwnProperty("hat")) {
+        var newelement3=document.createElement("div")
+        newelement3.style.width="100%"
+        newelement3.style.height="20px"
+        newelement3.style.borderTopLeftRadius="5px"
+        newelement3.style.borderTopRightRadius="5px"
+        newelement3.style.position="absolute"
+        newelement3.style.top="0px"
+        newelement3.style.left="0px"
+        newelement3.style.backgroundColor=data.hat.color
+        newelement2.appendChild(newelement3)
     }
-    for (var i=0; i < chareyes1.length; i++) {
-        chareyes1[i].setMesh(new voxelcss.Mesh(new voxelcss.ColorFace(eyecolor1)))
-    }
-    for (var i=0; i < charskin1.length; i++) {
-        charskin1[i].setMesh(new voxelcss.Mesh(new voxelcss.ColorFace(skincolor1)))
-    }
-    for (var i=0; i < charclothing1.length; i++) {
-        charclothing1[i].setMesh(new voxelcss.Mesh(new voxelcss.ColorFace(favcolor1)))
-    }
+    newelement.appendChild(newelement2)
+    var newelement2 = document.createElement(("div"))
+    newelement2.className = "body"
+    newelement.appendChild(newelement2)
+    
+    //Attach the character to element
+    element.appendChild(newelement)
+    return newelement
+    
 }
 function loading() {
     document.getElementById("testdiv2").style.display="block"
@@ -161,18 +154,7 @@ function updatechar1() {
     var skin=document.getElementById("skincolor").value
     var fav=document.getElementById("favcolor").value
     var eyes=document.getElementById("eyecolor").value
-    for (var i=0; i < charhair.length; i++) {
-        charhair[i].setMesh(new voxelcss.Mesh(new voxelcss.ColorFace(hair)))
-    }
-    for (var i=0; i < chareyes.length; i++) {
-        chareyes[i].setMesh(new voxelcss.Mesh(new voxelcss.ColorFace(eyes)))
-    }
-    for (var i=0; i < charskin.length; i++) {
-        charskin[i].setMesh(new voxelcss.Mesh(new voxelcss.ColorFace(skin)))
-    }
-    for (var i=0; i < charclothing.length; i++) {
-        charclothing[i].setMesh(new voxelcss.Mesh(new voxelcss.ColorFace(fav)))
-    }
+    document.getElementById("previewchar0").getElementsByClassName("head") [0].style.backgroundColor=skin
 }
 
 function showprofile(name) {
@@ -185,19 +167,22 @@ function showprofile2(data) {
 
 }
 
-function textbox(header, text, readtext=0, button1="Close", onclick1=function(){document.getElementById("textbox").style.display="none";playing=true;document.getElementById("worlddiv").requestPointerLock()},button2="", onclick2=function(){}) {
+function textbox(header, text, readtext=0, button1="Close", onclick1="document.getElementById('textbox').style.display='none';",button2="", onclick2="") {
     playing=false
     document.exitPointerLock()
     document.getElementById("textbox").style.display="block"
     document.getElementById("textheader").innerHTML=header
     document.getElementById("textbtn1").innerHTML=button1
-    document.getElementById("textbtn1").onclick=function () {onclick1()}
+    document.getElementById("textbtn1").setAttribute("onclick", "document.getElementById('textbox').style.display='none';"+onclick1)
     if (button2 != "") {
         document.getElementById("textbtn2").innerHTML=button2
-    document.getElementById("textbtn2").onclick=function () {onclick2()}
+    document.getElementById("textbtn2").setAttribute("onclick", "document.getElementById('textbox').style.display='none';"+onclick2)
     }
-    
-    typewriter(document.getElementById("textboxtext"), text, 0, 50)
+    if (readtext > 0) {
+    typewriter(document.getElementById("textboxtext"), text, 0, readtext)
+    }else{
+        document.getElementById("textboxtext").innerHTML=text
+    }
 }
 
 function typewriter(element, text, i, speed) {
@@ -207,68 +192,18 @@ function typewriter(element, text, i, speed) {
     }
 }
 
-function createEnemy(name) {
-    var enemy={
-        hp: 100,
-        rideable: false,
-        x: 0,
-        y: 0,
-        z: 0,
-        name: name,
-        addToEditor: function (editor) {
-            var temp1=scene2.getVoxels().length
-            load3dmodel(enemy.data,editor,true)
-            this.voxels=scene2.getVoxels().slice(temp1)
-            this.updateVoxels()
-        },
-        move: function (nx,ny,nz) {
-            this.x+=nx
-            this.y+=ny
-            this.z+=nz
-            for (var i=0; i < this.voxels.length; i++) {
-                var voxel=this.voxels[i]
-                voxel.setPositionX(voxel.getPositionX() +nx)
-                voxel.setPositionY(voxel.getPositionY() +ny)
-                voxel.setPositionZ(voxel.getPositionZ() +nz)
-            }
-            this.updateVoxels()
-        },
-        position: function (nx,ny,nz) {
-            this.move(nx-this.x,ny-this.y,nz-this.z)
-        },
-        updateVoxels: function () {
-            for (var i=0; i < this.voxels.length; i++) {
-                var voxel=this.voxels[i]
-                voxel.enemy=enemy
-            }
-        },
-        data: "",   
-        voxels: [],
-        rideable: false
-    }
-    if (name=="taxi") {
-        enemy.data=taximodel
-        enemy.rideable=true
-        enemy.ride={
-            autopilot: 2,
-            speed: 1,
-            route: "",
-            inside: {
-                wheel: "t1",
-                window: "w1"
-            }
-        }
-    }
-    return enemy
-}
 
-function ride(enemy) {
-    //Check if enemy contains ride property
-    if (enemy.hasOwnProperty("ride")) {
-        document.getElementById("worlddiv").style.height="70vh"
-        document.getElementById("worlddiv").style.width="70vw"
-        playing="ride"
-    }else{
-        Error("Enemy has no 'ride' property")
+
+
+
+//--------------------------------Character data--------------------------------
+var soldierdata1={
+    head: {
+        round: "50%",
+        color: "#996600"
+    },
+    hat: {
+        color: "#339933"
     }
 }
+var soldierdata2={...soldierdata1, head: {color:"#ffcc80", round: "20px"}}

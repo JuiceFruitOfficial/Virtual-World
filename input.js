@@ -5,12 +5,18 @@ var usery=0
 var userz=0
 var mouseClickSetting=0 //0= default, 1=like Minecraft
 var hotbarslot1=hotbarslot2=hotbarslot3="undefined1"
-
+var previousx=previousy=previousz=0
 
 
 
 function inputsettings() {
-    document.body.requestFullscreen()
+    try {
+        document.body.requestFullscreen()
+    }
+    catch (e) {
+        
+    }
+    
     document.getElementById("allowmedia").style.display="none"
     document.getElementById("inputsettings").style.display="block"
 }
@@ -18,69 +24,207 @@ function inputsettings() {
 function keysettings() {
     document.getElementById("keysettings").style.display="block"
 }
-
-function keypress(event) {
-    
-     if (playing) {
-
-    
-	var key=event.key
-	var code=event.keyCode
-    //alert(key)
-    var rotation=scene2.getRotationX()
-	if (code==32) {
-		scene2.setPanY(scene2.getPanY()+100)
-	}
-	if (key=="d") {
-		moveplayer(100,0,0,chunkLoading)
-	}
-	if (key=="a") {
-		moveplayer(-100,0,0,chunkLoading)
-	}
-
-	if (key=="s") {
-		moveplayer(0,0,100,chunkLoading)
-	}
-	if (key=="w") {
-		moveplayer(0,0,-100,chunkLoading)
+function keyup(e) {
+            
+    var key=e.keyCode
+    if (key==87) {
+        //W
+        document.getElementById("rightleg").style.animationIterationCount="0"
+        document.getElementById("leftleg").style.animationIterationCount="0"
+        
     }
-    if (key=="e") {
-        if (document.getElementById("inventory").style.display != "grid") {
-            document.getElementById("inventory").style.display="grid"
-            playing=false
-            openinventory(localStorage.inventory,0,"inventory")
-            document.exitPointerLock()
-        }
-    }
-    if (key=="p") {
-        showprofile(username)
+    if (key==68) {
+        //D
+        document.getElementById("rightleg").style.animationIterationCount="0"
+        document.getElementById("leftleg").style.animationIterationCount="0"
     }
 
-} else {
-    if (event.key=="e") {
+    if (key==83) {
+        //S
+        document.getElementById("rightleg").style.animationIterationCount="0"
+        document.getElementById("leftleg").style.animationIterationCount="0"
+    0
+    }
+    if (key==65) {
+        //A
+        document.getElementById("rightleg").style.animationIterationCount="0"
+        document.getElementById("leftleg").style.animationIterationCount="0"
+        
+    }
     
-        if (document.getElementById("inventory").style.display=="grid") {
-            document.getElementById("inventory").style.display="none"
-            document.getElementById("worlddiv").requestPointerLock()
-            playing=true
-        }
-    }}
 }
 
+function keyInput(e) {
+            
+    var key=e.keyCode
+    if (key==87) {
+        //W
+        if (riding=="false") {
+            document.getElementById("rightleg").style.animationIterationCount="infinite"
+            document.getElementById("leftleg").style.animationIterationCount="infinite"
+            document.getElementById("player").className=""
+        }else{
+            movegameobject(riding[0],0,0,-30,false)
+        }
+        
+        playerrotate=0
+        movegame(0,0,30)
+    }
+    if (key==68) {
+        //D
+        playerrotate=1
+        movegame(-30,0,0)
+        if (riding=="false") {
+            document.getElementById("rightleg").style.animationIterationCount="infinite"
+            document.getElementById("leftleg").style.animationIterationCount="infinite"
+            document.getElementById("player").className="turned"
+        }else{
+            movegameobject(riding[0],30,0,0,false)
+        }
+        
+    }
+
+    if (key==83) {
+        //S
+        document.getElementById("rightleg").style.animationIterationCount="infinite"
+        document.getElementById("leftleg").style.animationIterationCount="infinite"
+        playerrotate=2
+        movegame(0,0,-30)
+        
+    if (riding=="false") {
+        document.getElementById("player").className=""
+    }else{
+        movegameobject(riding[0],0,0,30,false)
+    }
+    }
+    if (key==65) {
+        //A
+        if (riding=="false") {
+            document.getElementById("rightleg").style.animationIterationCount="infinite"
+            document.getElementById("leftleg").style.animationIterationCount="infinite"
+            document.getElementById("player").className="turned"
+        }else{
+            movegameobject(riding[0],-30,0,0,false)
+        }
+        
+        playerrotate=3
+        movegame(30,0,0)
+    }
+    if (key==81) {
+        //Q
+        shoot()
+    }
+    if (key==69) {
+        //E
+        if (document.getElementById("inventory").style.display=="grid") {
+            openinventory(localStorage.inventory1, 0, "inventory")
+            document.getElementById("inventory").style.display="none"
+            document.getElementById("tabs").style.display="none"
+        }else{
+            openinventory(localStorage.inventory1, 0, "inventory")
+            document.getElementById("tabs").style.display="block"
+            document.getElementById("inventory").style.display="grid"
+        }
+    }
+    if (key==84) {
+        //T
+        if (enterplace == "false") {
+            if (riding !="false") {
+                document.getElementById("player").style.display="block"
+                document.getElementById("fakeplayer").parentElement.removeChild(document.getElementById("fakeplayer"))
+                riding="false"
+            }
+        }else{
+            document.getElementById("enterplace").style.display="none"
+            eval(enterplace.getAttribute("onplayerin"))
+            enterplace="false"
+        }
+    }
+
+    if (key==49) {
+        //1
+            selectbaritem(0)
+    }
+    if (key==50) {
+        //2
+            selectbaritem(1)
+    }
+    if (key==51) {
+        //3
+            selectbaritem(2)
+        
+    }
+    
+    if (key==77) {
+        //M
+        placeitem()
+    }
+}
+
+function selectbaritem(num) {
+    var hotbars=document.getElementById("hotbar").getElementsByTagName("div") 
+
+    hotbars[0].style.backgroundColor="rgba(255, 225, 159, 0.75)"
+    hotbars[1].style.backgroundColor="rgba(255, 225, 159, 0.75)"
+    hotbars[2].style.backgroundColor="rgba(255, 225, 159, 0.75)"
+    hotbars [num].style.backgroundColor="rgba(255, 225, 255, 0.75)"
+}
 function iteminfo(name) {
-    //[space, image, damage, durability, range (px)]
+    //[space, className, damage, durability, range (px)]
     if (name=="iron_pickaxe") {
-        return [5,"images/pickaxe.png", 10, 500, 200]
+        return [5,"ironpickaxe", 10, 500, 200]
+    }else if (name=="wood") {
+        return [5,"wood", 2, 500, 200]
+    }else if (name=="stone") {
+        return [1,"stone", 5, 5, 400]
+    }else{
+        Error("Unknown item "+name)
+        return []
     }
 }
 var inventory=""
 var inventorypoints=0
 var maxinvpoints=20
+
+function addtoinventory(name) {
+    name=name.replace("loot ","")
+    var maxspace=0
+    var iv=localStorage.getItem("inventory"+selectedchar).split(";")
+    var moved="false"
+    for (var i=1; i<iv.length-1; i++) {
+        if (moved=="false") {
+        if (iv[i].split(":") [0]==name) {
+            moved=i
+
+        }
+    }
+        maxspace+=iteminfo(iv[i].split(":") [0]) [0] * Number(iv[i].split(":") [1])
+    }
+    if (iteminfo(name) [0]+ maxspace <= maxinvpoints) {
+        if (moved=="false") {
+    localStorage.setItem("inventory"+selectedchar,localStorage.getItem("inventory"+selectedchar)+name+":1;")
+    localStorage.setItem("inventory0"+selectedchar,encrypt(localStorage.getItem("inventory"+selectedchar)))
+    }else {
+        iv[moved]=iv[moved].split(":") [0]+":"+(Number(iv[moved].split(":") [1])+1)
+            
+            localStorage.setItem("inventory"+selectedchar,iv.join(";"))
+            localStorage.setItem("inventory0"+selectedchar,encrypt(localStorage.getItem("inventory"+selectedchar)))
+    }
+        
+    }else{
+        
+        guidePanel("Not enough space")
+        return false
+    }
+    updatehotbar()
+    return true
+}
+
 function openinventory(data, place=0,source) {
     var verified=false
     var verifiedsource=""
     if (source=="inventory") {
-        if (data==localStorage.inventory) {
+        if (data==localStorage.inventory1) {
             verified=true
             verifiedsource="inventory;"+data
         }
@@ -112,14 +256,15 @@ function openinventory(data, place=0,source) {
                         var idata=inventory[i]
                         var inum=idata.split(":") [1]
                         var iname=idata.split(":") [0]
-                        inventorypoints+=iteminfo(iname) [0]
+                        inventorypoints+=iteminfo(iname) [0]*Number(inum)
                         var newelement=document.createElement("div")
                         newelement.setAttribute("onmouseover", "showiteminfo('"+ iname +"')")
                         newelement.setAttribute("onmouseleave", "document.getElementById('iteminfo').style.display='none';document.getElementById('storagepoints').style.display='block'")
-                        newelement.innerHTML="<img src=\"" + iteminfo(iname) [1] + "\"<span>"+iname.replace(/_/g, " ")+"</span><span>"+inum+"</span>"
+                        newelement.innerHTML="<div class=\"" + iteminfo(iname) [1] + "\" style=\"position: relative;margin-bottom: 0px;margin-top: auto;\"></div><span>"+iname.replace(/_/g, " ")+"</span><span>"+inum+"</span>"
                         document.getElementById("itemlist").appendChild(newelement)
                     }
                     document.getElementById("storagepoints").innerHTML="<h1>Inventory</h1><p>" + inventorypoints + "/" + maxinvpoints + " storage points used</p>"
+                    //Calculate space used
                     for (var i=0; i < maxinvpoints; i++) {
                         var newelement=document.createElement("span")
                         if (i < inventorypoints) {
@@ -175,15 +320,17 @@ function mousemove(e) {
             cubes[i].setAttribute("childnum", i)
         }
         //Check the target block's features (rideable, etc)
-        if (block != undefined) {
         var block=document.elementFromPoint(Math.floor(window.innerWidth /2), Math.floor(window.innerHeight /2)).parentElement.parentElement.parentElement
+
+        if (block != undefined) {
         if (block.hasAttribute("childnum")) {
             var voxel=scene2.getVoxels() [Number(block.getAttribute("childnum"))]
-        var enemy=voxel.enemy
+            if (voxel.hasOwnProperty("enemy")) {
+            var enemy=voxel.enemy
         if (enemy.rideable==true) {
             guidePanel(ridemessage)
         }
-        }
+        }}
     }
         
     }
@@ -199,10 +346,13 @@ function mouseclicked(e) {
                 if (block != undefined) {
                     if (block.hasAttribute("childnum")) {
                     var voxel=scene2.getVoxels() [Number(block.getAttribute("childnum"))]
-                var enemy=voxel.enemy
+                    if (voxel.hasOwnProperty("enemy")) {
+                        var enemy=voxel.enemy
                 if (enemy.rideable==true) {
                     ride(enemy)
                 }
+                    }
+                    
                 }
                 }
                 
@@ -211,87 +361,7 @@ function mouseclicked(e) {
         
     }
 }
-var placeonchunck=[0,0,0]
-var lastchunk="0,0"
-function moveplayer(x,y,z, loadChunk=true, userotation=true, moveplaceonchunk=true) {
-    
-    var rotation=scene2.getRotationY() / maxrotate * 360
-    var movex=0
-    var movey=0
-    var movez=0
-    if (moveplaceonchunk==true) {
-        placeonchunck[0]+=x
-    placeonchunck[1]+=y
-    placeonchunck[2]+=z
-    }
-    
-    for (var j=0; j < placeonchunck.length;j++) {
-        if (placeonchunck[j] >= 500) {
-            placeonchunck[j]-=500
-        }
-        if (placeonchunck[j] <0) {
-            placeonchunck[j]+=500
-        }
-    }
-    //working
-    if (userotation==true) {
-    document.getElementById("rotation").innerHTML=rotation
-    if (rotation < 45) {
-        document.getElementById("compass1").innerHTML="Up"
-        movez= z *-1
-        movex= x * -1
-    }else if (rotation < 135) {
-        document.getElementById("compass1").innerHTML="Right"
-        movex= z 
-        movez= x * -1
-    }else if (rotation < 225) {
-        document.getElementById("compass1").innerHTML="Bottom"
-        movez=z 
-        movex= x
-    }else if (rotation < 315) {
-        document.getElementById("compass1").innerHTML="Left"
-        movez= x  
-        movex= z *-1
-    }else{
-        document.getElementById("compass1").innerHTML="Up"
-        movez= z *-1
-        movex= x *-1
-    }
-    }else{
-        movex=x
-        movez=z
-    }
-    //Save new coordinates
-   localStorage.playerx=Number(localStorage.playerx) + movex
-    localStorage.playery=Number(localStorage.playery) + movey
-    localStorage.playerz=Number(localStorage.playerz) + movez
-    
-    if (loadChunk==true) {
-         if (Math.floor(Number(localStorage.playerx)/500) + "," + Math.floor(Number(localStorage.playerz)/500) != lastchunk) {
-        loadchunk(Math.floor(Number(localStorage.playerx)/500), Math.floor(Number(localStorage.playerz)/500))
-        lastchunk2=lastchunk
-        lastchunk=Math.floor(Number(localStorage.playerx)/500) + "," + Math.floor(Number(localStorage.playerz)/500) 
-    }
-    }
-    var placeonchunck2=(Number(localStorage.playerx) - Math.floor(Number(localStorage.playerx) / 500) * 500 )+ "," + (Number(localStorage.playerz) - Math.floor(Number(localStorage.playerz) / 500) * 500)
-    document.getElementById("position1").innerHTML="X: " + localStorage.playerx + "<br>Y: " + localStorage.playery + "<br>Z: " + localStorage.playerz + "<br>Last chunk: "+lastchunk2+"<br>Chunk: " + lastchunk + "<br>Place on chunck: " + placeonchunck + "<br>New place on chunck: " + placeonchunck2
-    //Update blocks
-    var voxels=scene2.getVoxels()
-    
-    for (var i=0; i < voxels.length; i++) {
-        var voxel=voxels[i]
-        voxel.setPositionX(voxel.getPositionX() +movex)
-        voxel.setPositionY(voxel.getPositionY() +movey)
-        voxel.setPositionZ(voxel.getPositionZ() +movez)
-    }
-    //Update light sources
-    var voxels=scene2.getLightSources()
-    for (var i=0; i < voxels.length; i++) {
-        var voxel=voxels[i]
-        voxel.setPositionX(voxel.getPositionX() +movex)
-        voxel.setPositionY(voxel.getPositionY() +movey)
-        voxel.setPositionZ(voxel.getPositionZ() +movez)
-    }
-    //Make tha game run smoother
-    performanceManager(x!=0, y!=0, z!=0)
+
+function placeitem() {
+
 }

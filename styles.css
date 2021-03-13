@@ -45,27 +45,6 @@ background: linear-gradient(45deg, rgba(116,250,130,1) 0%, rgba(0,123,255,1) 100
     
 }
 
-.target, #lefthand, #righthand {
-    position: absolute;
-    width: 150px;
-    height: 150px;
-    border: 5px solid green;
-    display: none;
-    z-index: 3;
-}
-
-#target1, #target2 {
-    bottom: 50%;
-    
-}
-#lefthand {
-    bottom: 10px;
-    right: 200px;
-}
-#righthand {
-    bottom: 10px;
-    right: 20px;
-}
 
 #testdiv2 {
     display: none;
@@ -520,6 +499,7 @@ background: linear-gradient(45deg, rgba(116,250,130,1) 0%, rgba(0,123,255,1) 100
     background-color: rgba(0,0,0,0.7);
     color: rgb(251, 255, 0);
     font-family: monospace;
+    overflow-y: auto;
 }
 
 #warning button {
@@ -857,6 +837,7 @@ transform: translateX(-50%);
 
 #inputsettings {
     background-color: white;
+    overflow-y: auto;
 }
 
 @keyframes zoomIn {
@@ -1185,8 +1166,10 @@ a:hover span {
     grid-template-columns: 100px 100px;
     justify-items: center;
     align-items: center;
+    z-index: 7;
 }
 #hotbar {
+    z-index: 9;
     bottom: 0;
     left: 0;
     height: 70px;
@@ -1204,8 +1187,8 @@ a:hover span {
 .key {
     font-size: 40px;
     display: inline-block;
-    width: 50px;
-    height: 50px;
+    width: 1em;
+    height: 1em;
     color: rgb(71, 245, 245);
     border: 2px solid rgb(71, 245, 245);
     text-shadow: 0px 0px 5px rgba(0,200,200,1);
@@ -1221,10 +1204,21 @@ a:hover span {
     background-color: rgba(255, 225, 159, 0.75);
     margin: 5px;
     margin-top: 10px;
+    position: relative;
+}
+
+#hotbar>div>span {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    display: inline-block;
+    
 }
 
 #inventory {
     grid-template-columns: 200px auto;
+    z-index: 9;
 }
 
 #storagepoints>span {
@@ -1243,6 +1237,7 @@ a:hover span {
     display: grid;
     grid-template-columns: 85px auto;
     text-align: left;
+    z-index: 9;
 }
 #user>div {
     margin: 5px;
@@ -1257,6 +1252,7 @@ a:hover span {
     left: 0;
     top: 85px;
     text-align: left;
+    z-index: 9;
 }
 
 #itemlist>div {
@@ -1267,6 +1263,8 @@ a:hover span {
     margin-left: 2.5%;
     margin-right: 2.5%;
     grid-template-columns: 50px auto 20px;
+    border: 1px solid rgb(177, 71, 0);
+    margin: 2px;
 }
 
 #itemlist>div>img {
@@ -1315,6 +1313,7 @@ a:hover span {
     position: absolute;
     right: 0px;
     top: 50px;
+    z-index: 9;
 }
 #notificationdiv>div {
     width: 200px;
@@ -1385,42 +1384,47 @@ a:hover span {
 
 #textbox {
     background-color: rgb(231, 188, 122);
-    height: 10vh;
     max-height: 200px;
     position: absolute;
     bottom: 3vh;
     width: 96vw;
     left: 2vw;
     display: none;
+    z-index: 9;
+    border: 1px solid black;
+    padding: 10px 0;
 }
 
-#textbox>button {
-    position: absolute;
-    bottom: 10px;
-    width: 70px;
+#textbox>div>button {
+    
+    min-width: 70px;
     height: 30px;
     background-color: rgb(182, 182, 182);
     border: none;
+    padding: 3px;
+    margin: 5px;
+}
+#buttondiv1 {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    
 }
 #guidePanel {
     padding: 10px;
     position: absolute;
     bottom: 100px;
-    
+    z-index: 7;
     left: 50%;
     transform: translateX(-50%);
     display: none;
     background-color: rgba(116, 190, 233, 0.4);
 }
-#textbtn1 {
-    right: 10px;
-}
-#textbtn2 {
-    right: 90px;
-}
+
 #jfos {
     background-color: rgba(0,123,255,0.7);
     animation: 1s fadeIn;
+    z-index: 9;
 }
 
 #appbar {
@@ -1466,4 +1470,1091 @@ a:hover span {
     width: calc(100% - 75px);
     height: 15px;
     
+}
+
+#carbar {
+    position: absolute;
+    display: none;
+    background-color: rgb(134, 134, 134);
+    border: 5px solid rgb(77, 77, 77);
+    border-bottom: 0px;
+    border-radius: 10px 10px 0 0;
+    bottom: 15vh;
+    left: calc(15vw - 5px);
+    width: 70vw;
+    height: 75px;
+    box-shadow: 0 10px 25px 30px inset rgba(30,30,30,0.7),0 0px 10px 5px rgba(30,30,30,0.7);
+}
+
+.steeringwheel {
+    display: inline-block;
+    position: relative;
+    width: 300px;
+    height: 300px;
+    background: transparent;
+    border-radius: 50%;
+    border: 10px solid rgb(85, 85, 85);
+}
+
+.steeringwheel::after, .steeringwheel::before {
+    content: "";
+    background: rgb(201, 201, 201);
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+}
+
+.steeringwheel::after {
+    height: 30px;
+    width: 100%;
+}
+.steeringwheel::before {
+    height: 100%;
+    width: 30px;
+}
+
+#carwheel {
+    position: absolute;
+    left: 10px;
+    top: -150%;
+}
+
+#player {
+   
+    top: 50%;
+    left: 50%;
+    z-index: 5;
+    transform: translate(-50%,-50%);
+}
+#player, .player {
+    position: absolute;
+    width: 125px;
+    height: 175px;
+}
+
+.head {
+    position: absolute;
+    top: 0px;
+    height: 55px;
+    width: 55px;
+    left: 35px;
+    background-color: bisque;
+}
+
+.hand {
+    position: absolute;
+    width: 20px;
+    height: 75px;
+    top: 60px;
+    background-color: lightblue;
+}
+
+.righthand {
+    right: 15px;
+}
+.lefthand {
+    left: 15px;
+}
+.turned>.lefthand {
+    display: none;
+}
+.turned>.righthand {
+    right: 50px;
+    z-index: 3;
+}
+.leg {
+    position: absolute;
+    width: 20px;
+    height: 75px;
+    top: 135px;
+    background-color: green;
+    transform-origin: top center;
+    animation: 1s leg2 infinite;
+    
+}
+.turned>.leg {
+    animation: 1s leg1 infinite;
+    
+}
+
+@keyframes leg2 {
+    0% {
+        height: 75px;
+    }
+    50% {
+        height: 30px;
+    }
+    100% {
+        height: 75px;
+    }
+}
+@keyframes leg1 {
+    0% {
+        transform:rotate(0deg);
+    }
+    25% {
+        transform: rotate(45deg);
+    }
+    75%{
+        transform: rotate(-45deg);
+    }
+    100% {
+        transform:rotate(0deg);
+    }
+}
+
+.rightleg {
+    animation-delay: 0.5s !important;
+    right: 35px;
+}
+.leftleg {
+    
+    left: 35px;
+}
+.turned>.leftleg {
+    left: 50px
+}
+.turned>.rightleg {
+    right: 50px
+}
+.turned>.body {
+    width: 35px;
+    left: 45px;
+}
+.body {
+    position: absolute;
+    background-color: yellow;
+    width: 55px;
+    left: 35px;
+    height: 75px;
+    top: 60px;
+}
+#gamearea>* {
+    z-index: 2;
+    position: absolute;
+}
+#gamearea {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.spellstick {
+    position: absolute;
+    width: 5px;
+    height: 50px;
+    background-color: brown;
+    right: 7px;
+    bottom: 5px;
+}
+.tree {
+    position: absolute;
+    width: 30px;
+    height: 200px;
+    background: linear-gradient(85deg, brown 0%, brown 10%, burlywood 15%, brown 20%, brown 30%, burlywood 35%, brown 40%, brown 50%, burlywood 55%, brown 60%, brown 70%, burlywood 75%, brown 80%, brown 90%, burlywood 95%, brown 100%);
+    border-radius: 0 0 15px 15px;
+}
+
+.tree::after {
+    content: "";
+    position: absolute;
+    top: -200px;
+    left: -90px;
+    width: 200px;
+    height: 200px;
+    background: green;
+}
+#info {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 9;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+.bullet {
+    background-color: red;
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+    position: absolute;
+    z-index: 3;
+}
+
+.stonespirit {
+    position: absolute;
+    background-color: gainsboro;
+    width: 70px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+
+
+.stonestand {
+    position: absolute;
+    height: 100px;
+    width: 80px;
+    border-radius: 50px;
+    background-color: gray;
+}
+
+.stonestand::before {
+    content:"";
+    border-radius: 50px;
+    width: 80px;
+    height: 80px;
+    background-color: lightgray;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+
+
+.wood {
+    position: absolute;
+    background-color: burlywood;
+    width: 50px;
+    height: 50px;
+    border-radius: 0 0 50% 50%;
+
+}
+.wood::before {
+    content: "";
+    position: absolute;
+    width: 44px;
+    height: 44px;
+    top: -25px;
+    left: 0px;
+    border-radius: 50%;
+    border: 3px solid brown;;
+    background: radial-gradient(peachpuff 0%, peachpuff 30%, brown 33%, peachpuff 35%, peachpuff 50%, brown 53%, peachpuff 55%);
+}
+.seed {
+    position: absolute;
+    background-color: white;
+    width: 50px;
+    height: 20px;
+    border-radius: 50%;
+    
+}
+
+.emerald {
+    position: absolute;
+    background: radial-gradient(circle, rgba(0,249,246,1) 0%, rgba(58,240,7,1) 100%);
+    width: 50px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+#health {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    width: 300px;
+    height: 50px;
+    background-color: grey;
+    z-index: 9;
+}
+
+#health>div {
+    width: 250px;
+    height: 40px;
+    margin: 5px;
+    margin-left: auto;
+    margin-right: 5px;
+    background-color: greenyellow;
+}
+
+.loot {
+    position: absolute;
+    animation:  3s float infinite;
+}
+
+@keyframes float {
+    50% {
+        transform: translateY(20px);
+    }
+    
+}
+
+
+.vine {
+    width: 200px;
+    height: 200px;
+    background-color: green;
+    position: absolute;
+}
+
+.vine::after {
+    content: "";
+    position: absolute;
+    height: 100%;
+    width: 40px;
+    left: 16px;
+    background: linear-gradient(90deg, rgba(61,209,114,1) 0%, rgb(0, 252, 122) 50%, rgba(61,209,114,1) 100%);
+
+}
+
+#itembar {
+    width: 70%;
+    height: 90px;
+    bottom: 0px;
+    background-color: darkgoldenrod;
+    border-radius: 10px 10px 0 0;
+    position: absolute;
+    left: 15%;
+    display: grid;
+    z-index: 6;
+grid-template-columns: 85px 85px 85px 85px 85px 85px;
+}
+
+#itembar>div>span {
+    display: inline-block;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+}
+
+#itembar>div {
+    margin: 10px;
+    background-color: bisque;
+    display: block;
+    position: relative;
+    width: 75px;
+    height: 75px;
+}
+
+#selector1 {
+    position: absolute;
+    bottom: 0px;
+    width: 75px;
+    height: 75px;
+    border: 5px solid red;
+    z-index: 7;
+}
+
+.areashield1 {
+    position: absolute;
+    height: 100px;
+    width: 80px;
+    border-radius: 50px;
+    background-color: gray;
+}
+
+.areashield1::before {
+    content:"";
+    border-radius: 50px;
+    width: 80px;
+    height: 80px;
+    background-color: lightgray;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.areashield1::after {
+    content: "";
+    position: absolute;
+    background: radial-gradient(circle, rgba(0,249,246,1) 0%, rgba(58,240,7,1) 100%);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    top: 25px;
+    left: 25px;
+    box-shadow: inset 0 0 3px 3px rgba(0,0,0,0.3) ;
+}
+
+.areashield01 {
+    position: absolute;
+    width: 500px;
+    height: 400px;
+    border-radius: 250px 250px 0px 0px;
+    background-color: lightskyblue;
+    z-index: 1;
+}
+.areashield01::before {
+    content: "";
+    position: absolute;
+    width: 500px;
+    height: 200px;
+    border-radius:50%;
+    bottom: -100px;
+    left: 0px;
+    background-color: blue;
+}
+
+.leaf { 
+width: 50px; 
+height: 50px;
+background-color: #A0DE21; 
+border-radius: 50px 0px;
+position: absolute;
+}
+
+.leaf::after {
+content: "";
+width: 3px;
+height: 30px;
+position: absolute;
+top: 29px;
+left: -10px;
+transform-origin: bottom left;
+transform: rotate(45deg);
+background-color: cadetblue;
+}
+#tabs {
+bottom: 90vh;
+left: 10vw;
+width: 200px;
+height: 30px;
+position: absolute;
+display: none;
+z-index: 9;
+}
+
+#tabs>span {
+display: inline-block;
+background-color: burlywood;
+width: 50%;
+position: absolute;
+border-radius: 5px 5px 0 0;
+height: 30px;
+
+}
+#tabs>span:nth-child(1) {
+left: 50%;
+background-color: peachpuff;
+}
+
+#leafstorm {
+left: 50px;
+top: 30px;
+}
+
+#leafstorm1 {
+top: 105px;
+left: 50px;
+}
+#inventory2>div>.leaf {
+top: 50%;
+left: 50%;
+transform: translate(-50%,-50%);
+}
+#inventory2>div {
+width: 75px;
+height: 75px;
+position: absolute;
+border: 5px solid yellow;
+border-color: rgb(241, 241, 72) yellow;
+display: none;
+}
+
+#inventory2>p {
+width: 85px;
+position: absolute;
+text-align: center;
+}
+
+#inventory2>.weak {
+border: 5px solid yellow;
+border-color: rgb(247, 194, 147) peachpuff;
+background: radial-gradient(circle, rgba(61,194,209,0.75) 0%, rgba(27,255,136,0.75) 100%); 
+}
+
+.cave {
+width: 300px;
+height: 350px;
+background-color: darkgray;
+position: absolute;
+border-radius: 50% 50% 0 0;
+}
+
+.cave::before {
+content: "";
+position: absolute;
+width: 160px;
+height: 150px;
+background-color: black;
+left: 68px;
+bottom:0px;
+}
+
+.rock {
+background-color: lightgrey;
+border: 2px solid gray;
+width: 100px;
+height: 200px;
+border-radius: 50px 100px 40px 75px;
+position: absolute;
+display: inline-block;
+}
+
+#enterplace {
+position: absolute;
+display: none;
+text-align: center;
+color: white;
+z-index: 7;
+}
+
+.key {
+width: 50px;
+height: 50px;
+font-size: 45px;
+border: 3px solid lightblue;
+border-radius: 10px;
+display: inline-block;
+}
+
+#fade {
+width: 100%;
+height: 100%;
+z-index: 9;
+position: absolute;
+left: 0px;
+top: 0px;
+background-color: black;
+pointer-events: none;
+animation: 2s fade;
+opacity: 0;
+display: none;
+}
+
+@keyframes fade {
+0% {
+opacity: 0;
+}
+50% {
+opacity: 1;
+}
+100% {
+opacity: 0;
+}
+}
+.ladder {
+width: 150px;
+height: 250px;
+background-color: transparent;
+border: 0px;
+border-left: 20px solid burlywood;
+border-right: 20px solid burlywood;
+position: absolute;
+}
+
+.ladder::after {
+content: "";
+width: 150px;
+position: absolute;
+height: 50px;
+background-color: blanchedalmond;
+left: 0px;
+top: 50px;
+}
+.ladder::before {
+content: "";
+width: 150px;
+position: absolute;
+height: 50px;
+background-color: blanchedalmond;
+left: 0px;
+bottom: 50px;
+}
+.grass {
+position: absolute;
+width: 40px;
+height: 10px;
+border: 10px solid green;
+border-top-color: transparent;
+border-bottom-width: 5px;
+}
+.grass::after {
+content: "";
+width: 10px;
+height: 15px;
+position: absolute;
+left: 0px;
+bottom: -5px;
+border: 10px solid green;
+border-top-color: transparent;
+border-bottom-width: 5px;
+}
+.grass::before {
+content: "";
+width: 10px;
+height: 20px;
+position: absolute;
+right: 0px;
+bottom: -5px;
+border: 10px solid green;
+border-top-color: transparent;
+border-bottom-width: 5px;
+}
+
+.headerm {
+display: inline-block;
+position: relative;
+width: 100px;
+height: 100px;
+border: 20px solid gray;
+border-bottom: 0px;
+border-top-color: transparent;
+}
+.headerm::after {
+content: "";
+display: inline-block;
+width: 0px;
+position: absolute;
+top: 0px;
+left: -20px;
+height: 0px;
+border: 70px solid transparent;
+border-top: 50px solid gray;
+}
+
+.headera {
+position: relative;
+display: inline-block;
+width: 0px;
+height: 0px;
+border: 45px solid transparent;
+border-top: 0px;
+border-bottom: 90px solid gray;
+}
+.headera::after {
+content: "";
+position: absolute;
+top: 40px;
+left: -22px;
+display: inline-block;
+width: 0px;
+height: 0px;
+border: 20px solid transparent;
+border-top: 0px;
+border-bottom: 40px solid magenta;
+}
+.headerc {
+position: relative;
+display: inline-block;
+width: 60px;
+height: 100px;
+border-radius: 50%;
+border: 20px solid gray;
+border-right-color: transparent;
+}
+.headerh {
+position: relative;
+display: inline-block;
+width: 70px;
+height: 100px;
+border-radius: 40px;
+border: 20px solid gray;
+border-top: 0px;
+border-bottom: 0px;
+}
+
+.headerh::after {
+content: "";
+position: absolute;
+width: 100%;
+top: 40px;
+height: 20px;
+left: 0px;
+background-color: lightslategray;
+}
+.headeri {
+display: inline-block;
+width: 30px;
+height: 100px;
+background-color: lightsteelblue;
+position: relative;
+}
+
+.headerv {
+position: relative;
+display: inline-block;
+width: 0px;
+height: 0px;
+border: 45px solid transparent;
+border-bottom: 0px;
+border-top: 90px solid gray;
+}
+.headerv::after {
+content: "";
+position: absolute;
+bottom: 30px;
+left: -30px;
+display: inline-block;
+width: 0px;
+height: 0px;
+border: 30px solid transparent;
+border-bottom: 0px;
+border-top: 60px solid magenta;
+
+}
+
+.headern {
+position: relative;
+display: inline-block;
+width: 60px;
+height: 100px;
+border: 30px solid gray;
+border-top: 0px;
+border-bottom: 0px;
+}
+
+.headern::after {
+transform: rotate(45deg);
+content: "";
+position: absolute;
+width: 200%;
+top: 32px;
+height: 30px;
+left: -30px;
+background-color: gray;
+border-radius: 15px;
+}
+
+#underline {
+width: 90%;
+margin: auto;
+height: 30px;
+box-shadow: 0 0 10px 5px  rgb(252, 52, 252);
+background-color: magenta;
+}
+
+.unfloor {
+width: 200px;
+height: 200px;
+background-color: #2F4F4F;
+
+}
+
+.unfloor::after {
+content:"";
+width: 200px;
+height: 200px;
+background-color: transparent;
+box-shadow: inherit;
+position: absolute;
+top: 0;
+left: 0;
+z-index: 6;
+}
+
+#dark {
+position: absolute;
+width: 100%;
+height: 100%;
+top: 0;
+left: 0;
+background: radial-gradient(circle, rgba(0,0,0,0) 0%, rgba(0,0,0,75) 100%); 
+display: none;
+}
+.cell {
+background-color: sandybrown;
+width: 200px;
+height: 200px;
+}
+
+.stonegolem {
+width: 150px;
+height: 150px;
+background-color: lightgray;
+border-radius: 50%;
+position: absolute;
+}
+
+.stonegolem::before {
+content: "";
+width: 80px;
+height: 40px;
+left: 35px;
+top: 30px;
+background-color: lightsteelblue;
+border-radius: 50%;
+position: absolute;
+}
+
+.stonegolem::after {
+content: "";
+width: 40px;
+height: 10px;
+left: 45px;
+top: 40px;
+background-color: transparent;
+border: 10px solid rgb(252, 52, 252);
+border-bottom: 0px;
+border-top: 0px;
+position: absolute;
+}
+
+.boat1 {
+    background-color: rgb(202, 93, 20);
+    width: 500px;
+    height: 150px;
+    border-radius: 50%;
+    border-top-left-radius: 40%;
+    border-top-right-radius: 40%;
+
+}
+.boat1::after {
+    z-index:1;
+    content: "";
+    width: 480px;
+    border-radius: 50%;
+    border: 10px solid rgb(145, 65, 1);
+    height: 80px;
+    position: absolute;
+    top: -3px;
+    left: 0;
+    border-top-color: transparent;
+}
+
+.boat1::before {
+    content: "";
+    width: 480px;
+    border-radius: 50%;
+    
+    border: 10px solid rgb(145, 65, 1);
+    border-bottom-color: transparent;
+    height: 80px;
+    position: absolute;
+    top: -3px;
+    left: 0;
+}
+
+.boat1>.boatside {
+    position: absolute;
+border: 0px solid rgb(202, 93, 20);
+    border-bottom-width: 0px;
+border-radius: 50%;
+width: 500px;
+height: 150px;
+top: -60px;
+border-bottom-width: 100px;
+z-index: 1;
+}
+
+.boat1>#fakeplayer {
+    position: absolute;
+    left: 180px;
+    bottom: 50px;
+}
+
+.pier1 {
+    width: 700px;
+    height: 90px;
+    background-color: rgb(194, 101, 15);
+}
+.pier1::after {
+    content: "";
+    width: 40px;
+    height: 70px;
+    background-color: rgb(177, 102, 4);
+    position: absolute;
+    left: 10px;
+    bottom: -60px;
+    border-radius: 20px;
+    box-shadow: 640px 0 0 0 rgb(177, 102, 4);
+}
+
+.pier1::before {
+    content: "";
+    width: 40px;
+    height: 20px;
+    background-color: rgb(177, 102, 4);
+    position: absolute;
+    left: 10px;
+    top: -20px;
+    border-radius: 20px 20px 0 0;
+    box-shadow: 640px 0 0 0 rgb(177, 102, 4);
+}
+.basefloor {
+    width: 1000px;
+    height: 1000px;
+    background-color: rgb(231, 185, 116);
+}
+.brickwall {
+    width: 400px;
+    height: 400px;
+    background: url(images/brick.png);
+}
+.brickwall::after {
+    margin: 0;
+    padding: 0;
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 50px;
+    background-color: #d18017;
+    left: 0;
+    top: 0px;
+    box-shadow: 0px -17px 40px -20px black;
+}
+.brickwall2 {
+    width: 50px;
+    height: 400px;
+    background-color: #d18017;
+}
+.brickwall2::after {
+    content: "";
+    position: absolute;
+    left: 0px;
+    top: 400px;
+    width: 50px;
+    height: 400px;
+    background: url(images/brick.png);
+}
+
+.carvedtext {
+    font-family: 'Times New Roman', Times, serif;
+    text-shadow: 0px 0px 5px black;
+}
+.portal {
+    width: 300px;
+    height: 300px;
+    background-color: darkgray;
+    border-radius: 50% 50% 0 0;
+}
+.portal.active::after {
+    content: "";
+    position: absolute;
+    width: 160px;
+    height: 230px;
+    left: 68px;
+    bottom: 0px;
+    border-radius: 50% 50% 5% 5%;
+    background: radial-gradient(#7322c3 15%, #73dbe6, #e4d99e 120%);
+    box-shadow: 0px 0px 5px 5px rgba(0,0,0,0.2) inset;
+
+}
+
+.sand, .sandroad {
+    background: url(images/sand.png);
+    width: 180px;
+    height: 180px;
+}
+
+.stone, .stone1, .stone2, .stone3{
+    background-color: lightgrey;
+    border: 2px solid gray;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    display: inline-block;
+    box-shadow: 0px 3px 5px 1px rgba(0,0,0,0.3);
+}
+.stone {
+    border-radius: 50px 100px 40px 75px;
+}
+.stone1 {
+    border-radius: 50px 50px 70px 35px;
+}
+.stone2 {
+    border-radius: 30px 20px 40px 30px;
+}
+
+.road1 {
+    background-color: rgb(77, 77, 77);
+    width: 400px;
+    height: 400px;
+}
+
+.road1::after {
+    content: "";
+    width: 20px;
+    height: 100px;
+    position: absolute;
+    top: 50px;
+    left: 190px;
+    background-color: transparent;
+    border-top: 100px solid white;
+    border-bottom: 100px solid white;
+}
+
+.taxi::after {
+    width: 100px;    
+    position: absolute;
+    bottom:100%;
+    left: 0;
+    height: 70px;
+    content: "TAXI";
+}
+.taxi {
+    
+    border-top: 70px solid #facf4e;
+    width: 100px;
+    height: 70px;
+    background-color: #ffe300;
+    line-height: 70px;
+    font-size: 30px;
+    letter-spacing: 3px;
+}
+.taxi.leave {
+    animation: 3s taxileave;
+}
+.taxi.arrive {
+    animation: 3s taxiarrive;
+}
+@keyframes taxileave {
+    100% {
+        top: -300px;
+    }
+}
+@keyframes taxiarrive {
+    0% {
+        top: -300px;
+    }
+    70% {
+        opacity: 1;
+        top: 50%;
+    }
+    100% {
+        top: 50%;
+        opacity: 0;
+    }
+}
+.wallscreen {
+    width: 300px;
+    height: 200px;
+    background-color: black;
+    box-shadow: 0px 0px 40px 20px black;
+}
+
+.wallscreen::after {
+    margin: 0;
+    padding: 0;
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 20px;
+    background-color: #353331;
+    left: 0;
+    top: 0px;
+    box-shadow: 0px -17px 40px -20px black;
+}
+
+.soil {
+    width: 1000px;
+    height: 1000px;
+    background-color: #915a14;
+}
+
+.grass1 {
+    width: 1000px;
+    height: 1000px;
+    background-color: #469114;
+}
+
+.ironpickaxe {
+    width: 50px;
+    height: 50px;
+    background-image: url(images/pickaxe.png);
+    background-size: cover;
 }
