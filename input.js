@@ -6,8 +6,8 @@ var userz=0
 var mouseClickSetting=0 //0= default, 1=like Minecraft
 var hotbarslot1=hotbarslot2=hotbarslot3="undefined1"
 var previousx=previousy=previousz=0
-
-
+var selectedhotbarslot=0
+var currentaction="break"
 
 function inputsettings() {
     try {
@@ -117,11 +117,11 @@ function keyInput(e) {
     if (key==69) {
         //E
         if (document.getElementById("inventory").style.display=="grid") {
-            openinventory(localStorage.inventory1, 0, "inventory")
+            openinventory(localStorage.getItem("inventory"+selectedchar), 0, "inventory")
             document.getElementById("inventory").style.display="none"
             document.getElementById("tabs").style.display="none"
         }else{
-            openinventory(localStorage.inventory1, 0, "inventory")
+            openinventory(localStorage.getItem("inventory"+selectedchar), 0, "inventory")
             document.getElementById("tabs").style.display="block"
             document.getElementById("inventory").style.display="grid"
         }
@@ -155,143 +155,9 @@ function keyInput(e) {
         
     }
     
-    if (key==77) {
-        //M
-        placeitem()
-    }
+    
 }
 
-function selectbaritem(num) {
-    var hotbars=document.getElementById("hotbar").getElementsByTagName("div") 
-
-    hotbars[0].style.backgroundColor="rgba(255, 225, 159, 0.75)"
-    hotbars[1].style.backgroundColor="rgba(255, 225, 159, 0.75)"
-    hotbars[2].style.backgroundColor="rgba(255, 225, 159, 0.75)"
-    hotbars [num].style.backgroundColor="rgba(255, 225, 255, 0.75)"
-}
-function iteminfo(name) {
-    //[space, className, damage, durability, range (px)]
-    if (name=="iron_pickaxe") {
-        return [5,"ironpickaxe", 10, 500, 200]
-    }else if (name=="wood") {
-        return [5,"wood", 2, 500, 200]
-    }else if (name=="stone") {
-        return [1,"stone", 5, 5, 400]
-    }else{
-        Error("Unknown item "+name)
-        return []
-    }
-}
-var inventory=""
-var inventorypoints=0
-var maxinvpoints=20
-
-function addtoinventory(name) {
-    name=name.replace("loot ","")
-    var maxspace=0
-    var iv=localStorage.getItem("inventory"+selectedchar).split(";")
-    var moved="false"
-    for (var i=1; i<iv.length-1; i++) {
-        if (moved=="false") {
-        if (iv[i].split(":") [0]==name) {
-            moved=i
-
-        }
-    }
-        maxspace+=iteminfo(iv[i].split(":") [0]) [0] * Number(iv[i].split(":") [1])
-    }
-    if (iteminfo(name) [0]+ maxspace <= maxinvpoints) {
-        if (moved=="false") {
-    localStorage.setItem("inventory"+selectedchar,localStorage.getItem("inventory"+selectedchar)+name+":1;")
-    localStorage.setItem("inventory0"+selectedchar,encrypt(localStorage.getItem("inventory"+selectedchar)))
-    }else {
-        iv[moved]=iv[moved].split(":") [0]+":"+(Number(iv[moved].split(":") [1])+1)
-            
-            localStorage.setItem("inventory"+selectedchar,iv.join(";"))
-            localStorage.setItem("inventory0"+selectedchar,encrypt(localStorage.getItem("inventory"+selectedchar)))
-    }
-        
-    }else{
-        
-        guidePanel("Not enough space")
-        return false
-    }
-    updatehotbar()
-    return true
-}
-
-function openinventory(data, place=0,source) {
-    var verified=false
-    var verifiedsource=""
-    if (source=="inventory") {
-        if (data==localStorage.inventory1) {
-            verified=true
-            verifiedsource="inventory;"+data
-        }
-    }
-
-    if (verified==true) {
-        if (source=="inventory") {
-            if (verifiedsource=="inventory;"+data) {
-                if (selectedchar==1) {
-                    if (encrypt(localStorage.inventory1)==localStorage.inventory01) {
-                        inventory=localStorage.inventory1.split(";")
-                    }
-                }
-                if (selectedchar==2) {
-                    if (encrypt(localStorage.inventory2)==localStorage.inventory02) {
-                        inventory=localStorage.inventory2.split(";")
-                    }
-                }
-                if (selectedchar==3) {
-                    if (encrypt(localStorage.inventory3)==localStorage.inventory03) {
-                        inventory=localStorage.inventory3.split(";")
-                    }
-                }
-                inventorypoints=0
-                if (place==0) {
-                    document.getElementById("itemlist").innerHTML=""
-                    
-                    for (var i=1; i < inventory.length-1; i++) {
-                        var idata=inventory[i]
-                        var inum=idata.split(":") [1]
-                        var iname=idata.split(":") [0]
-                        inventorypoints+=iteminfo(iname) [0]*Number(inum)
-                        var newelement=document.createElement("div")
-                        newelement.setAttribute("onmouseover", "showiteminfo('"+ iname +"')")
-                        newelement.setAttribute("onmouseleave", "document.getElementById('iteminfo').style.display='none';document.getElementById('storagepoints').style.display='block'")
-                        newelement.innerHTML="<div class=\"" + iteminfo(iname) [1] + "\" style=\"position: relative;margin-bottom: 0px;margin-top: auto;\"></div><span>"+iname.replace(/_/g, " ")+"</span><span>"+inum+"</span>"
-                        document.getElementById("itemlist").appendChild(newelement)
-                    }
-                    document.getElementById("storagepoints").innerHTML="<h1>Inventory</h1><p>" + inventorypoints + "/" + maxinvpoints + " storage points used</p>"
-                    //Calculate space used
-                    for (var i=0; i < maxinvpoints; i++) {
-                        var newelement=document.createElement("span")
-                        if (i < inventorypoints) {
-                            newelement.style.backgroundColor="lime"
-                        }else {
-                            newelement.style.backgroundColor="gray"
-                        }
-                        document.getElementById("storagepoints").appendChild(newelement)
-                    }
-                }
-                
-            }
-        }
-    }
-}
-
-function showiteminfo(name) {
-    document.getElementById('iteminfo').style.display='block';document.getElementById('storagepoints').style.display='none'
-    var idata=iteminfo(name)
-    //[space, image, damage, durability, range (px)]
-    document.getElementById("itemname").innerHTML=name
-    document.getElementById("itemdurability").innerHTML=idata[3]
-    document.getElementById("itemdamage").innerHTML=idata[2]
-    document.getElementById("itemrange").innerHTML=idata[4]
-    document.getElementById("itemspace").innerHTML=idata[0]
-    document.getElementById("itemimg").src=idata[1]
-}
 var lastchunk2="0,0"
 var maxrotate=Math.PI * 2
 function mousemove(e) {
@@ -362,6 +228,54 @@ function mouseclicked(e) {
     }
 }
 
-function placeitem() {
+function placeitem(event) {
+    num=selectedhotbarslot
+    if (currentitem !="") {
+    if(currentaction=="place" ) {
+        var iv=localStorage.getItem("inventory"+selectedchar).split(";")
+        //If you have more than 1 of the item
+        var di=false
+        if (Number(iv[num+1].split(":") [1]) > 1) {
+            iv[num+1]=iv[num+1].split(":") [0]+":"+Number(iv[num+1].split(":") [1]-1)
+        }else{
+            //Delete item from inventory and hotbar
+            iv.splice(num+1,1)
+            di=true
+        }
+        ivstr=iv.join(";")
+        if (ivstr[ivstr.length-1]==";") {
+           localStorage.setItem("inventory"+selectedchar, ivstr)
+        }else{
+            localStorage.setItem("inventory"+selectedchar, ivstr+";") 
+        }
+        
+        localStorage.setItem("inventory0"+selectedchar, encrypt(localStorage.getItem("inventory"+selectedchar)))
+        creategameobject(iteminfo(currentitem) [1], event.clientX-window.innerWidth/2, event.clientY-window.innerHeight/2, iteminfo(currentitem) [3], iteminfo(currentitem) [1], playery,false)
+    if (di==true) {
+        //Change current item to "" if item was deleted from inventory
+        currentitem=""
+    }
+    
+updatehotbar()
+actions(currentitem)
+}else if (currentaction=="break") {
+    var hp=event.target.getAttribute("health")
+    if (Number(hp)-iteminfo(currentitem) [2] <= 0) {
+        removegameobject(Number(event.target.getAttribute("num")),true)
+    }else{
+        event.target.setAttribute("health",Number(hp)-iteminfo(currentitem) [2])
+    }
+}else if (currentaction.includes("make a")) {
+    var item=currentaction.split("make a") [1].substring(currentaction.split("make a") [1].indexOf(" ")+1, currentaction.split("make a") [1].length)
+    console.log(item)
+    placeCraftingItem(event.clientX-window.innerWidth/2, playery, event.clientY-window.innerHeight/2, item, 1, iteminfo(item).loot,iteminfo(item).loot)
+}
 
+
+}}
+
+function mousemoved(event) {
+    document.getElementById("mouse").style.left=event.clientX+"px"
+    document.getElementById("mouse").style.top=event.clientY+"px"
+    
 }

@@ -1,5 +1,5 @@
 function encrypt(string) {
-    var str= "abcdefghijklmnopqrstuvwxyz1234567890!@#€%&/?:-_,*";
+    var str= "abcdefghijklmnopqrstuvwxyz1234567890!@#€%&/?:-_,*;";
     var nums = [3,10,-10,7,15,8,10,7,4];
     var num=0
     var i2=1

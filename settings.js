@@ -18,11 +18,11 @@ function updatehotbar() {
     }else{
         hotbarslot3=":"
     }
-    console.log(inv)
+    //console.log(inv)
     var hotbars=document.getElementById("hotbar").getElementsByTagName("div") 
-    hotbars[0].innerHTML="<span class=\"" + iteminfo(hotbarslot1.split(":") [0]) [1] + "\"></span>"
-    hotbars[1].innerHTML="<span class=\"" + iteminfo(hotbarslot2.split(":") [0]) [1] + "\"></span>"
-    hotbars[2].innerHTML="<span class=\"" + iteminfo(hotbarslot3.split(":") [0]) [1] + "\"></span>"
-
+    hotbars[0].innerHTML="<span class=\"" + iteminfo(hotbarslot1.split(":") [0]) [1] + "\"></span><p>"+hotbarslot1.split(":") [1]+"</p>"
+    hotbars[1].innerHTML="<span class=\"" + iteminfo(hotbarslot2.split(":") [0]) [1] + "\"></span><p>"+hotbarslot2.split(":") [1]+"</p>"
+    hotbars[2].innerHTML="<span class=\"" + iteminfo(hotbarslot3.split(":") [0]) [1] + "\"></span><p>"+hotbarslot3.split(":") [1]+"</p>"
+    actions(currentitem)
 
 }

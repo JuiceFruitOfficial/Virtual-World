@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JuiceFruit virtual world</title>
-    
-    <script src="3d.js"></script>
+    <script src="data.js"></script>
+    <script src="crafting.js"></script>
+    <script src="inventory.js"></script>
     <script src="projector.js"></script>
     <link rel="stylesheet" id="styles1" href="styles.css">
     <script src="input.js"></script>
@@ -23,7 +24,7 @@
     <script src="jfos.js"></script>
     <script src="settings.js"></script>
 </head>
-<body onresize="resized()" onkeydown="keyInput(event)" onkeyup="keyup(event)" >
+<body onresize="resized()" onkeydown="keyInput(event)" onkeyup="keyup(event)" onmousemove="mousemoved(event)">
     <div id="warning" class="modal">
         <h1>Warning!</h1>
         <p>You are currently trying to enter a beta version of our virtual world! It will be a place where everyone can be whatever they want. They can work there (for real money), play, meet eachoter... actually, the only limit is your imagination! Sounds cool, right?<br><br> Well that is what it will be some day...<br><br>Currently it is a very unstable early version containing tests and many, many bugs... <br><br>To make the virtual world working nicely, we need <strong>your help</strong>. Yes, you can help us! And we are not talking only about programmers, we are talking about everyone. You can help with things you are good at! You can help us make the world better, design something, just throw some good ideas at us, just about anything!</p>
@@ -273,7 +274,10 @@
                 <div></div>
                 <div></div>
             </div>
+            <div id="actions"></div>
+            <div id="crafting">
 
+            </div>
             <div id="inventory" class="popup">
                 <div>
                     <h1>Items</h1>
@@ -310,6 +314,7 @@
                 <button id="textbtn2"></button></div>
                 
             </div>
+            <div id="mouse"></div>
             <div id="notificationdiv"></div>
             <div id="jfos" class="modal">
                 <div id="appbar">

@@ -134,3 +134,4 @@ function taxiTo(x, y, z, name) {
         creategameobject("taxi arrive", 0,0,900,"",0)
     }, time,x,y,z,name)
 }
+

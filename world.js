@@ -142,7 +142,8 @@ function loadplace(name) {
         creategameobject("tree",290,-300,50,"wood,wood,wood,wood,wood",0,true)
         creategameobject("tree",-300,-300,50,"wood,wood,wood,wood,wood",0,true)
         creategameobject("grass",50,0,50,"wood,wood,wood,wood,wood",0,true)
-        creategameobject("rock",50,0,-50,"stone,stone,stone,stone",0,true)
+        creategameobject("rock",50,0,100,"stone,stone,stone,stone",0,true)
+        creategameobject("campfire",-50,-300,50,"wood,wood,wood,wood,wood",0,true)
     }
     movegame(0,0,0)
 }
@@ -164,6 +165,9 @@ function removegameobject(num, loot) {
     document.getElementById("gamearea").removeChild(gameobjects[num])
     gameobjects.splice(num, 1)
     i=i-1
+    for (var i = 0; i < gameobjects.length; i++) {
+        gameobjects[i].setAttribute("num", i)
+    }
 }
 function enterisland(name) {
     var newelement=document.createElement("div")
@@ -457,6 +461,9 @@ function movegame(x, z, y) {
                         document.getElementById("enterplace").innerHTML='<span class="key">T</span><h1>Enter</h1>'
                         document.getElementById("enterplace").style.display="block"
                     }
+                }
+                if (gameobjects[i].hasAttribute("crafting")) {
+                    opencraftingmenu(i)
                 }
                 if (gameobjects[i].hasAttribute("ontalk")) {
                         enterplace=gameobjects[i]
@@ -827,6 +834,60 @@ function creategameobject(type, x, z, health, loot, y = playery, hidden = false)
         rock1.style.width="45px"
         rock1.style.height="45px"
         newelement.appendChild(rock1)
+    }else if (type=="campfire") {
+        var rock1=document.createElement("div")
+        rock1.className="stone1"
+        rock1.style.left="10px"
+        rock1.style.bottom="50px"
+        newelement.appendChild(rock1)
+
+        var rock1=document.createElement("div")
+        rock1.className="stone2"
+        rock1.style.left="-15px"
+        rock1.style.bottom="30px"
+        newelement.appendChild(rock1)
+
+        var rock1=document.createElement("div")
+        rock1.className="stone"
+        rock1.style.left="-10px"
+        rock1.style.bottom="0px"
+        newelement.appendChild(rock1)
+
+        var rock1=document.createElement("div")
+        rock1.className="stone"
+        rock1.style.right="35px"
+        rock1.style.bottom="55px"
+        newelement.appendChild(rock1)
+
+        var rock1=document.createElement("div")
+        rock1.className="stone"
+        rock1.style.right="10px"
+        rock1.style.bottom="50px"
+        newelement.appendChild(rock1)
+
+        var rock1=document.createElement("div")
+        rock1.className="stone1"
+        rock1.style.right="-10px"
+        rock1.style.bottom="30px"
+        newelement.appendChild(rock1)
+
+        var rock1=document.createElement("div")
+        rock1.className="stone2"
+        rock1.style.right="-10px"
+        rock1.style.bottom="0px"
+        newelement.appendChild(rock1)
+
+        var rock1=document.createElement("div")
+        rock1.className="stone1"
+        rock1.style.right="17px"
+        rock1.style.bottom="-10px"
+        newelement.appendChild(rock1)
+
+        var rock1=document.createElement("div")
+        rock1.className="stone"
+        rock1.style.left="17px"
+        rock1.style.bottom="-10px"
+        newelement.appendChild(rock1)
     }
     newelement.className=type
     }
@@ -850,6 +911,10 @@ function creategameobject(type, x, z, health, loot, y = playery, hidden = false)
     }else{
         sessionStorage[((playerx + x) / window.innerWidth).toFixed(0) + "," + ((playerz + z) / window.innerHeight).toFixed(0)]=gameobjects.length -1
     }*/
+
+    for (var i = 0; i < gameobjects.length; i++) {
+        gameobjects[i].setAttribute("num", i)
+    }
 
 }
 

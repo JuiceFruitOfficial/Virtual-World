@@ -1526,6 +1526,7 @@ a:hover span {
     left: 50%;
     z-index: 5;
     transform: translate(-50%,-50%);
+    cursor: none;
 }
 #player, .player {
     position: absolute;
@@ -1640,6 +1641,7 @@ a:hover span {
     left: 0;
     width: 100%;
     height: 100%;
+    cursor: none;
 }
 .spellstick {
     position: absolute;
@@ -2557,4 +2559,93 @@ z-index: 1;
     height: 50px;
     background-image: url(images/pickaxe.png);
     background-size: cover;
+}
+.campfire {
+    width: 100px;
+    height: 75px;
+    border-radius: 50%;
+    background-color: #f1a239;
+}
+#actions {
+    position: absolute;
+    z-index: 9;
+    bottom: 100px;
+    left: 10px;
+    height: 50vh;
+    width: 300px;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+#actions>div {
+    text-align: left;
+    position: absolute;
+    left: 10px;
+    width: 280px;
+    background-color: rgba(255, 225, 159, 0.7);
+    height: 50px;
+    border: 3px solid rgb(177, 71, 0);
+    line-height: 50px;
+    box-sizing: border-box; 
+    padding: 0 5px;
+}
+
+#hotbar>div>p {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+#actions>.selected {
+    background-color: rgba(174, 255, 251, 0.7);
+}
+
+#gudepanel .key {
+    width: 30px;
+    height: 30px;
+
+    border: 2px solid lightblue;
+    border-radius: 5px;
+    display: inline-block;
+
+    line-height: 30px;
+    font-size: 20px;
+}
+#mouse {
+    opacity: 0.5;
+    filter:grayscale(1);
+    z-index: 6;
+    pointer-events: none;
+}
+#mouse.default {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgb(0, 255, 0);
+    transform: translate(-50%,-50%);
+}
+
+#crafting {
+    background-color: rgb(255, 200, 80);
+    width: 375px;
+    min-height: 80px;
+    display: none;
+    z-index: 6;
+    grid-template-columns: 70px 70px 70px 70px 70px;
+    grid-gap: 10px;
+    padding: 10px;
+}
+
+#crafting>div> button {
+    background-color: rgb(46, 46, 173);
+    border-radius: 0;
+    border: none;
+    padding: 5px 10px;
+    color: white;
+}
+
+#crafting>div> button:hover {
+    background-color: rgb(68, 68, 175);
+}
+.crafting {
+    opacity: 0.5;
+    filter:grayscale(1);
 }
